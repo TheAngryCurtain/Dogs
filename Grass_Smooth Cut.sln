@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grass_Smooth Cut.Plugins", "Grass_Smooth Cut.Plugins.csproj", "{BCB62C2D-1AE0-8688-E236-2441649CD587}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grass_Smooth Cut", "Grass_Smooth Cut.csproj", "{CEB66DF6-963F-D68F-6313-9F08F87CF8CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grass_Smooth Cut.Editor", "Grass_Smooth Cut.Editor.csproj", "{C11BD4ED-FD33-F97F-563B-6E44CB08BDF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCB62C2D-1AE0-8688-E236-2441649CD587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCB62C2D-1AE0-8688-E236-2441649CD587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCB62C2D-1AE0-8688-E236-2441649CD587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCB62C2D-1AE0-8688-E236-2441649CD587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB66DF6-963F-D68F-6313-9F08F87CF8CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB66DF6-963F-D68F-6313-9F08F87CF8CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB66DF6-963F-D68F-6313-9F08F87CF8CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB66DF6-963F-D68F-6313-9F08F87CF8CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C11BD4ED-FD33-F97F-563B-6E44CB08BDF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11BD4ED-FD33-F97F-563B-6E44CB08BDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11BD4ED-FD33-F97F-563B-6E44CB08BDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11BD4ED-FD33-F97F-563B-6E44CB08BDF3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
