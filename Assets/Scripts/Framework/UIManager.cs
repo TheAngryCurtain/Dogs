@@ -262,6 +262,8 @@ public class UIManager : Singleton<UIManager>
 
     public void LoadLevelWithScreen(int locationIndex)
     {
+        ClearScreenStack();
+
         GameManager.Instance.m_LocationIndex = locationIndex;
         TransitionToScreen(UI.Enums.ScreenId.Loading);
     }
