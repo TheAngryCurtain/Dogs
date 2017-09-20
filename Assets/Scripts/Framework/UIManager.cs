@@ -46,6 +46,8 @@ public class UIManager : Singleton<UIManager>
 
     void Start ()
     {
+        DontDestroyOnLoad(m_Canvas);
+
         TransitionToScreen(ScreenId.Splash);
     }
 	

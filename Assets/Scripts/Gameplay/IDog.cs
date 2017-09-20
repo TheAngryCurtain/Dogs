@@ -70,6 +70,11 @@ public abstract class IDog : MonoBehaviour
         "Bow Wow!"
     };
 
+    public void SetFollowCamera(Camera cam)
+    {
+        m_Camera = cam;
+    }
+
     protected virtual void Start()
     {
         //OnThrowMeterUpdated += UIManager.Instance.UpdateThrowMeter;
@@ -224,7 +229,6 @@ public abstract class IDog : MonoBehaviour
         m_Jumping = Input.GetButton("Jump");
 
         AnimatorUpdate();
-
         
         if (Input.GetButtonUp("Jump"))
         {

@@ -27,7 +27,7 @@ public class DiscController : MonoBehaviour
     private float m_ThrowForce;
     private float m_CurveAmount = 0f;
 
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -56,7 +56,18 @@ public class DiscController : MonoBehaviour
             Throw(m_Thrower.forward, 65f, 0f);
         }
     }
-//#endif
+#endif
+
+    public void Reset()
+    {
+        m_Transform.SetParent(null);
+        m_Collider.enabled = true;
+
+        m_Transform.rotation = Quaternion.identity;
+
+        m_Rigidbody.velocity = Vector3.zero;
+        m_Rigidbody.angularVelocity = Vector3.zero;
+    }
 
     public void Throw(Vector3 direction, float force, float curveAmount)
     {

@@ -18,6 +18,16 @@ public class CameraController : MonoBehaviour
     private float m_CurrentYaw = 0f;
     private eCameraMode m_CameraMode = eCameraMode.Free;
 
+    public void SetFollowTarget(Transform target)
+    {
+        m_Target = target;
+    }
+
+    public void SetLockTarget(Transform lockObj)
+    {
+        m_LockObject = lockObj;
+    }
+
     private void Update()
     {
         if (Input.GetButtonDown("Camera Toggle"))
