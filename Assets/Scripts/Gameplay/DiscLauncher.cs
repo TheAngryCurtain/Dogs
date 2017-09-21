@@ -11,9 +11,19 @@ public class DiscLauncher : MonoBehaviour
 
     private DiscController m_Disc;
 
-    public void AssignDisc(DiscController disc)
+    private void Awake()
     {
-        m_Disc = disc;
+        VSEventManager.Instance.AddListener<GameplayEvents.OnDiscSpawnedEvent>(OnDiscSpawned);
+    }
+
+    private void OnDestroy()
+    {
+        VSEventManager.Instance.RemoveListener<GameplayEvents.OnDiscSpawnedEvent>(OnDiscSpawned);
+    }
+
+    private void OnDiscSpawned(GameplayEvents.OnDiscSpawnedEvent e)
+    {
+        m_Disc = e.DiscObj.GetComponent<DiscController>();
     }
 
     private void Launch()

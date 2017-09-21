@@ -7,9 +7,7 @@ public abstract class IDog : MonoBehaviour
 {
     public enum eActionType { None, Jump, Special }
 
-    public System.Action<float> OnThrowMeterUpdated;
-    public System.Action<float> OnHydrationMeterUpdated;
-    public System.Action<eActionType> OnCatchMade;
+    //public System.Action<float> OnThrowMeterUpdated;
 
     [SerializeField] protected Rigidbody m_Rigidbody;
     [SerializeField] protected Camera m_Camera;
@@ -54,7 +52,6 @@ public abstract class IDog : MonoBehaviour
     protected DiscController m_Disc = null;
     protected RigidbodyConstraints m_DefaultConstraints = RigidbodyConstraints.FreezeRotation;
     protected RigidbodyConstraints m_JumpConstraints = RigidbodyConstraints.None;
-    protected System.Action<Vector3> m_OnLandCallback;
     protected bool m_CanDrink = false;
     protected WaterDish m_Dish = null;
     protected float m_CurrentHydration;
@@ -79,7 +76,6 @@ public abstract class IDog : MonoBehaviour
     {
         //OnThrowMeterUpdated += UIManager.Instance.UpdateThrowMeter;
         //OnHydrationMeterUpdated += UIManager.Instance.UpdateHydration;
-        //OnCatchMade += UIManager.Instance.OnCatchMade;
 
         m_CurrentJumpForce = m_VariableJumpForce;
         ModifyHydration(m_MaxHydration);
@@ -89,7 +85,6 @@ public abstract class IDog : MonoBehaviour
     {
         //OnThrowMeterUpdated -= UIManager.Instance.UpdateThrowMeter;
         //OnHydrationMeterUpdated -= UIManager.Instance.UpdateHydration;
-        //OnCatchMade -= UIManager.Instance.OnCatchMade;
     }
 
     public virtual void GetMovement()
@@ -154,37 +149,37 @@ public abstract class IDog : MonoBehaviour
     }
 
 
-    public virtual void ChargeThrow()
-    {
-        // can't throw without disc
-        if (m_Disc == null || m_Tumbling) return;
+    //public virtual void ChargeThrow()
+    //{
+    //    // can't throw without disc
+    //    if (m_Disc == null || m_Tumbling) return;
 
-        float trigger = Mathf.Abs(Input.GetAxisRaw("Charge Throw"));
-        if (trigger > 0.1f)
-        {
-            m_ThrowPercent = Mathf.Clamp(m_ThrowPercent += m_ThrowMeterIncrement, 0f, 100f);
-            if (OnThrowMeterUpdated != null)
-            {
-                OnThrowMeterUpdated(m_ThrowPercent / 100f);
-            }
-        }
+    //    float trigger = Mathf.Abs(Input.GetAxisRaw("Charge Throw"));
+    //    if (trigger > 0.1f)
+    //    {
+    //        m_ThrowPercent = Mathf.Clamp(m_ThrowPercent += m_ThrowMeterIncrement, 0f, 100f);
+    //        if (OnThrowMeterUpdated != null)
+    //        {
+    //            OnThrowMeterUpdated(m_ThrowPercent / 100f);
+    //        }
+    //    }
 
-        if (m_PreviousTriggerValue - trigger > 0.5f)
-        {
-            // trigger dumped, throw
-            m_ThrowPercent /= 100f;
-            float curveAmount = 0f;
-            Throw(m_Transform.forward, m_ThrowPercent * m_MaxThrowPower, curveAmount);
+    //    if (m_PreviousTriggerValue - trigger > 0.5f)
+    //    {
+    //        // trigger dumped, throw
+    //        m_ThrowPercent /= 100f;
+    //        float curveAmount = 0f;
+    //        Throw(m_Transform.forward, m_ThrowPercent * m_MaxThrowPower, curveAmount);
 
-            m_ThrowPercent = 0f;
-            if (OnThrowMeterUpdated != null)
-            {
-                OnThrowMeterUpdated(m_ThrowPercent);
-            }
-        }
+    //        m_ThrowPercent = 0f;
+    //        if (OnThrowMeterUpdated != null)
+    //        {
+    //            OnThrowMeterUpdated(m_ThrowPercent);
+    //        }
+    //    }
 
-        m_PreviousTriggerValue = trigger;
-    }
+    //    m_PreviousTriggerValue = trigger;
+    //}
 
     public virtual void ApplyJump()
     {
@@ -274,10 +269,7 @@ public abstract class IDog : MonoBehaviour
             m_CurrentThirstSpeedModifier = 1f;
         }
 
-        if (OnHydrationMeterUpdated != null)
-        {
-            OnHydrationMeterUpdated(m_CurrentHydration / m_MaxHydration);
-        }
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateHydrationEvent(m_CurrentHydration / m_MaxHydration));
     }
 
     public virtual void Catch(Transform frisbeeObj)
@@ -298,23 +290,15 @@ public abstract class IDog : MonoBehaviour
             frisbeeObj.localPosition = Vector3.zero;
             frisbeeObj.rotation = m_MouthTransform.rotation;
 
-            if (OnCatchMade != null)
-            {
-                OnCatchMade(m_LastActionType);
-            }
+            VSEventManager.Instance.TriggerEvent(new GameplayEvents.DogCatchDiscEvent(m_LastActionType));
         }
     }
 
-    public void RegisterLandCallback(System.Action<Vector3> callback)
-    {
-        m_OnLandCallback = callback;
-    }
-
-    public virtual void Throw(Vector3 direction, float power, float curveAmount)
-    {
-        m_Disc.Throw(direction, power, curveAmount);
-        m_Disc = null;
-    }
+    //public virtual void Throw(Vector3 direction, float power, float curveAmount)
+    //{
+    //    m_Disc.Throw(direction, power, curveAmount);
+    //    m_Disc = null;
+    //}
 
     public virtual void HandleGroundInteraction(bool onGround)
     {
@@ -328,11 +312,7 @@ public abstract class IDog : MonoBehaviour
             m_Rigidbody.constraints = m_DefaultConstraints;
 
             // if you've caught the disc and just landed, let it be known
-            if (m_Disc != null && m_OnLandCallback != null)
-            {
-                m_OnLandCallback(m_Transform.position);
-                m_OnLandCallback = null;
-            }
+            VSEventManager.Instance.TriggerEvent(new GameplayEvents.DogTouchGroundEvent(m_Disc != null, m_Transform.position));
 
             // tumble check
             float directionDot = Vector3.Dot(m_Velocity, m_Transform.forward);

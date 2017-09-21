@@ -13,7 +13,7 @@ public class DogController : MonoBehaviour
             m_dog.GetMovement();
             m_dog.LocalUpdate();
             m_dog.Bark();
-            m_dog.ChargeThrow();
+            //m_dog.ChargeThrow();
         }
     }
 

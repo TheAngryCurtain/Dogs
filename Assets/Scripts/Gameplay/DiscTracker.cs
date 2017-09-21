@@ -24,29 +24,29 @@ public class DiscTracker : MonoBehaviour
             Debug.LogError("The Disc lacks a disc controller");
         }
 
-        m_discController.OnGroundHit += OnDiscTouchedGround;
-        m_discController.OnCatch += OnDiscCaught;
-        m_discController.OnThrow += OnDiscThrown;
+        VSEventManager.Instance.AddListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchedGround);
+        VSEventManager.Instance.AddListener<GameplayEvents.DogCatchDiscEvent>(OnDiscCaught);
+        VSEventManager.Instance.AddListener<GameplayEvents.DiscThrownEvent>(OnDiscThrown);
     }
 
     private void OnDestroy()
     {
-        m_discController.OnGroundHit -= OnDiscTouchedGround;
-        m_discController.OnCatch -= OnDiscCaught;
-        m_discController.OnThrow -= OnDiscThrown;
+        VSEventManager.Instance.RemoveListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchedGround);
+        VSEventManager.Instance.RemoveListener<GameplayEvents.DogCatchDiscEvent>(OnDiscCaught);
+        VSEventManager.Instance.RemoveListener<GameplayEvents.DiscThrownEvent>(OnDiscThrown);
     }
 
-    private void OnDiscTouchedGround()
+    private void OnDiscTouchedGround(GameplayEvents.DiscTouchGroundEvent e)
     {
         ShowTarget(false);
     }
 
-    private void OnDiscCaught()
+    private void OnDiscCaught(GameplayEvents.DogCatchDiscEvent e)
     {
         ShowTarget(false);
     }
 
-    private void OnDiscThrown()
+    private void OnDiscThrown(GameplayEvents.DiscThrownEvent e)
     {
         ShowTarget(true);
     }

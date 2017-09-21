@@ -4,33 +4,47 @@ using UnityEngine;
 
 public class UIEvents
 {
-    public class ScoreEvent : VSGameEvent
+    public class UpdateScoreEvent : VSGameEvent
     {
-        public int[] Scores;
+        public float TotalScore;
 
-        public ScoreEvent(int[] scores)
+        public UpdateScoreEvent(float score)
         {
-            Scores = scores;
+            TotalScore = score;
         }
     }
 
-    public class SetEvent : VSGameEvent
+    public class UpdateMessageEvent : VSGameEvent
     {
-        public int[] Sets;
+        public string Message;
+        public float DisplayTime;
+        public InGameHudScreen.eMessageAlignment Alignment;
 
-        public SetEvent(int[] sets)
+        public UpdateMessageEvent(string message, float time, InGameHudScreen.eMessageAlignment alignment)
         {
-            Sets = sets;
+            Message = message;
+            DisplayTime = time;
+            Alignment = alignment;
         }
     }
 
-    public class ServingEvent : VSGameEvent
+    public class UpdateMissedCatchEvent : VSGameEvent
     {
-        public int Side;
+        public int Remaining;
 
-        public ServingEvent(int side)
+        public UpdateMissedCatchEvent(int misses)
         {
-            Side = side;
+            Remaining = misses;
+        }
+    }
+
+    public class UpdateHydrationEvent : VSGameEvent
+    {
+        public float HydrationPercent;
+
+        public UpdateHydrationEvent(float percent)
+        {
+            HydrationPercent = percent;
         }
     }
 }

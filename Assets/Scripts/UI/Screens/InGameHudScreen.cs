@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class InGameHudScreen : UIBaseScreen
 {
+    public enum eMessageAlignment { Positive, Negative };
+
     [SerializeField] private Slider m_ThrowMeter;
     [SerializeField] private Slider m_HydrationMeter;
     [SerializeField] private Text m_ScoreText;
@@ -15,82 +17,71 @@ public class InGameHudScreen : UIBaseScreen
     [SerializeField] private Color m_PositiveColor;
     [SerializeField] private Color m_NegativeColor;
 
-    private float m_Score = 0f;
-    private string[] m_Messages = new string[]
-    {
-            "Good!", "Great!", "Excellent!"
-    };
-
     public override void Initialize()
     {
         base.Initialize();
 
+        VSEventManager.Instance.AddListener<UIEvents.UpdateScoreEvent>(UpdateScore);
+        VSEventManager.Instance.AddListener<UIEvents.UpdateMessageEvent>(UpdateMessage);
+        VSEventManager.Instance.AddListener<UIEvents.UpdateMissedCatchEvent>(UpdateMisses);
+        VSEventManager.Instance.AddListener<UIEvents.UpdateHydrationEvent>(UpdateHydration);
+
         m_ThrowMeter.gameObject.SetActive(false);
-        UpdateScore(0);
     }
 
-    public void UpdateThrowMeter(float percent)
+    public override void Shutdown()
     {
-        if (percent == 0f)
+        base.Shutdown();
+
+        VSEventManager.Instance.RemoveListener<UIEvents.UpdateScoreEvent>(UpdateScore);
+        VSEventManager.Instance.RemoveListener<UIEvents.UpdateMessageEvent>(UpdateMessage);
+        VSEventManager.Instance.RemoveListener<UIEvents.UpdateMissedCatchEvent>(UpdateMisses);
+        VSEventManager.Instance.RemoveListener<UIEvents.UpdateHydrationEvent>(UpdateHydration);
+    }
+
+    //public void UpdateThrowMeter(float percent)
+    //{
+    //    if (percent == 0f)
+    //    {
+    //        m_ThrowMeter.gameObject.SetActive(false);
+    //    }
+    //    else if (!m_ThrowMeter.gameObject.activeSelf)
+    //    {
+    //        m_ThrowMeter.gameObject.SetActive(true);
+    //    }
+
+    //    m_ThrowMeter.value = percent;
+    //}
+
+    public void UpdateHydration(UIEvents.UpdateHydrationEvent e)
+    {
+        m_HydrationMeter.value = e.HydrationPercent;
+    }
+
+    public void UpdateScore(UIEvents.UpdateScoreEvent e)
+    {
+        m_ScoreText.text = string.Format("{0:0}", e.TotalScore);
+    }
+
+    public void UpdateMisses(UIEvents.UpdateMissedCatchEvent e)
+    {
+        // TODO
+    }
+
+    public void UpdateMessage(UIEvents.UpdateMessageEvent e)
+    {
+        m_CongratsText.color = e.Alignment == eMessageAlignment.Positive ? m_PositiveColor : m_NegativeColor;
+        m_CongratsText.text = e.Message;
+
+        if (e.DisplayTime > 0f)
         {
-            m_ThrowMeter.gameObject.SetActive(false);
-        }
-        else if (!m_ThrowMeter.gameObject.activeSelf)
-        {
-            m_ThrowMeter.gameObject.SetActive(true);
-        }
-
-        m_ThrowMeter.value = percent;
-    }
-
-    public void UpdateHydration(float percent)
-    {
-        m_HydrationMeter.value = percent;
-    }
-
-    public void UpdateScore(float amount)
-    {
-        m_Score += amount;
-        m_ScoreText.text = string.Format("{0:0}", m_Score);
-    }
-
-    public void UpdateMessage(float screenTime, string msg, Color color)
-    {
-        m_CongratsText.color = color;
-        m_CongratsText.text = msg;
-
-        if (screenTime > 0f)
-        {
-            StartCoroutine(ClearMessage(screenTime));
+            StartCoroutine(ClearMessage(e.DisplayTime));
         }
     }
 
     private IEnumerator ClearMessage(float delay)
     {
         yield return new WaitForSeconds(delay);
-        UpdateMessage(-1, "", Color.white);
-    }
-
-    public void OnCatchMade(IDog.eActionType action)
-    {
-        float baseScoreForCatch = 50f;
-        float modifier = 1f;
-        switch (action)
-        {
-            default:
-            case IDog.eActionType.None:
-                break;
-
-            case IDog.eActionType.Jump:
-                modifier = 1.5f;
-                break;
-
-            case IDog.eActionType.Special:
-                modifier = 2f;
-                break;
-        }
-
-        UpdateMessage(2f, m_Messages[(int)action], m_PositiveColor);
-        UpdateScore(baseScoreForCatch * modifier);
+        m_CongratsText.text = string.Empty;
     }
 }

@@ -93,6 +93,7 @@ public class ModesScreen : UIBaseScreen
     {
         // set this here for now, but will need game data structure later
         GameManager.Instance.m_NumOfPlayers = index + 1;
+        GameManager.Instance.m_Mode = m_CurrentMode;
 
         UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.Locations);
     }

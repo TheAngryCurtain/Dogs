@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class DiscController : MonoBehaviour
 {
-    public System.Action OnGroundHit;
-    public System.Action OnCatch;
-    public System.Action OnThrow;
-
     [SerializeField] private Transform m_Transform;
     [SerializeField] private Rigidbody m_Rigidbody;
     [SerializeField] private TrailRenderer m_Trail;
@@ -26,6 +22,16 @@ public class DiscController : MonoBehaviour
     private bool m_Held = true;
     private float m_ThrowForce;
     private float m_CurveAmount = 0f;
+
+    private void Awake()
+    {
+        VSEventManager.Instance.AddListener<GameplayEvents.DogTouchGroundEvent>(DogTouchGroundAfterCatch);
+    }
+
+    private void OnDestroy()
+    {
+        VSEventManager.Instance.RemoveListener<GameplayEvents.DogTouchGroundEvent>(DogTouchGroundAfterCatch);
+    }
 
 #if UNITY_EDITOR
     private void Update()
@@ -81,11 +87,6 @@ public class DiscController : MonoBehaviour
         m_Collider.enabled = true;
 
         m_Held = false;
-
-        if (OnThrow != null)
-        {
-            OnThrow();
-        }
     }
 
     public void Catch(IDog catchingDog)
@@ -98,17 +99,9 @@ public class DiscController : MonoBehaviour
         m_Rigidbody.angularVelocity = Vector3.zero;
         m_Rigidbody.isKinematic = true;
         m_Collider.enabled = false;
-
-        // register the landing callback
-        catchingDog.RegisterLandCallback(DogTouchGroundAfterCatch);
-
-        if (OnCatch != null)
-        {
-            OnCatch();
-        }
     }
 
-    private void DogTouchGroundAfterCatch(Vector3 position)
+    private void DogTouchGroundAfterCatch(GameplayEvents.DogTouchGroundEvent e)
     {
         if (m_SafeArea == null)
         {
@@ -116,20 +109,16 @@ public class DiscController : MonoBehaviour
         }
 
         // preserve the saved y value
-        position.y = m_SafeAreaPrefab.transform.position.y;
-        m_SafeArea.transform.position = position;
+        e.LandPosition.y = m_SafeAreaPrefab.transform.position.y;
+        m_SafeArea.transform.position = e.LandPosition;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            VSEventManager.Instance.TriggerEvent(new GameplayEvents.DiscTouchGroundEvent());
             m_Held = true;
-
-            if (OnGroundHit != null)
-            {
-                OnGroundHit();
-            }
         }
     }
 
