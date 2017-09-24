@@ -23,10 +23,11 @@ public class InGameHudScreen : UIBaseScreen
 
         VSEventManager.Instance.AddListener<UIEvents.UpdateScoreEvent>(UpdateScore);
         VSEventManager.Instance.AddListener<UIEvents.UpdateMessageEvent>(UpdateMessage);
-        VSEventManager.Instance.AddListener<UIEvents.UpdateMissedCatchEvent>(UpdateMisses);
         VSEventManager.Instance.AddListener<UIEvents.UpdateHydrationEvent>(UpdateHydration);
 
         m_ThrowMeter.gameObject.SetActive(false);
+
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnGameStartEvent(GameManager.Instance.m_Mode));
     }
 
     public override void Shutdown()
@@ -35,7 +36,6 @@ public class InGameHudScreen : UIBaseScreen
 
         VSEventManager.Instance.RemoveListener<UIEvents.UpdateScoreEvent>(UpdateScore);
         VSEventManager.Instance.RemoveListener<UIEvents.UpdateMessageEvent>(UpdateMessage);
-        VSEventManager.Instance.RemoveListener<UIEvents.UpdateMissedCatchEvent>(UpdateMisses);
         VSEventManager.Instance.RemoveListener<UIEvents.UpdateHydrationEvent>(UpdateHydration);
     }
 
@@ -53,22 +53,17 @@ public class InGameHudScreen : UIBaseScreen
     //    m_ThrowMeter.value = percent;
     //}
 
-    public void UpdateHydration(UIEvents.UpdateHydrationEvent e)
+    private void UpdateHydration(UIEvents.UpdateHydrationEvent e)
     {
         m_HydrationMeter.value = e.HydrationPercent;
     }
 
-    public void UpdateScore(UIEvents.UpdateScoreEvent e)
+    private void UpdateScore(UIEvents.UpdateScoreEvent e)
     {
         m_ScoreText.text = string.Format("{0:0}", e.TotalScore);
     }
 
-    public void UpdateMisses(UIEvents.UpdateMissedCatchEvent e)
-    {
-        // TODO
-    }
-
-    public void UpdateMessage(UIEvents.UpdateMessageEvent e)
+    private void UpdateMessage(UIEvents.UpdateMessageEvent e)
     {
         m_CongratsText.color = e.Alignment == eMessageAlignment.Positive ? m_PositiveColor : m_NegativeColor;
         m_CongratsText.text = e.Message;

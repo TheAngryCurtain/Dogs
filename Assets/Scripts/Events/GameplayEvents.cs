@@ -24,6 +24,16 @@ public class GameplayEvents
         }
     }
 
+    public class OnGameStartEvent : VSGameEvent
+    {
+        public ModesScreen.eMode GameMode;
+
+        public OnGameStartEvent(ModesScreen.eMode mode)
+        {
+            GameMode = mode;
+        }
+    }
+
     public class OnLevelLoadedEvent : VSGameEvent
     {
         public OnLevelLoadedEvent()

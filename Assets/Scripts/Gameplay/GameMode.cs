@@ -14,16 +14,18 @@ public abstract class GameMode
 public class CatchMode : GameMode
 {
     private int m_MaxNumDrops = 3;
-    private int m_CurrentNuMDrops = 0;
+    private int m_CurrentNumDrops = 0;
     private float m_Score = 0;
     private string[] m_Messages = new string[]
     {
-            "Good!", "Great!", "Excellent!"
+        "Good!", "Great!", "Excellent!"
     };
 
     public override void Init()
     {
-        m_CurrentNuMDrops = m_MaxNumDrops;
+        m_CurrentNumDrops = m_MaxNumDrops;
+
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(m_MaxNumDrops)); // TODO change this to zero once the flow of the mode is set up
 
         VSEventManager.Instance.AddListener<GameplayEvents.DogCatchDiscEvent>(OnDogCatchDisc);
         VSEventManager.Instance.AddListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchGround);
@@ -36,7 +38,7 @@ public class CatchMode : GameMode
 
     public override bool CheckEndCondition()
     {
-        return m_CurrentNuMDrops == 0;
+        return m_CurrentNumDrops == 0;
     }
 
     public override void Complete()
@@ -75,11 +77,11 @@ public class CatchMode : GameMode
 
     public void OnDiscTouchGround(GameplayEvents.DiscTouchGroundEvent e)
     {
-        if (m_CurrentNuMDrops > 0)
+        if (m_CurrentNumDrops > 0)
         {
-            m_CurrentNuMDrops -= 1;
+            m_CurrentNumDrops -= 1;
         }
 
-        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(m_CurrentNuMDrops));
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(m_CurrentNumDrops));
     }
 }

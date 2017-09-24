@@ -18,6 +18,17 @@ public class CameraController : MonoBehaviour
     private float m_CurrentYaw = 0f;
     private eCameraMode m_CameraMode = eCameraMode.Free;
 
+    private void Awake()
+    {
+        VSEventManager.Instance.AddListener<GameplayEvents.OnLevelLoadedEvent>(OnLevelLoaded);
+    }
+
+    private void OnLevelLoaded(GameplayEvents.OnLevelLoadedEvent e)
+    {
+        // just look at the dish I guess when the level loads
+        transform.position = new Vector3(49.75f, 0.85f, 40);
+    }
+
     public void SetFollowTarget(Transform target)
     {
         m_Target = target;

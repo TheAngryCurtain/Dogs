@@ -30,11 +30,11 @@ public class UIEvents
 
     public class UpdateMissedCatchEvent : VSGameEvent
     {
-        public int Remaining;
+        public int Misses;
 
         public UpdateMissedCatchEvent(int misses)
         {
-            Remaining = misses;
+            Misses = misses;
         }
     }
 

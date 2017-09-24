@@ -39,6 +39,18 @@ public class UIMenu : MonoBehaviour
         SetActiveItem(m_ListItems[m_ActiveIndex]);
     }
 
+    public void PreSetMenuDataForModes(GameModeData[] data)
+    {
+        m_MenuItems = new UIMenuItemInfo[data.Length];
+        for (int i = 0; i < data.Length; i++)
+        {
+            m_MenuItems[i] = new UIMenuItemInfo();
+            m_MenuItems[i].m_IconSprite = data[i].m_Icon;
+            m_MenuItems[i].m_LabelText = data[i].m_Name;
+            m_MenuItems[i].m_Description = data[i].m_Description;
+        }
+    }
+
     public void ClearMenu()
     {
         for (int i = 0; i < m_MenuContainer.childCount; i++)

@@ -11,6 +11,7 @@
             Modes,
             Locations,
             Loading,
+            GameReady,
             GameHUD
         }
 

@@ -30,6 +30,6 @@ public class LoadingScreen : UIBaseScreen
             yield return null;
         }
 
-        UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.GameHUD);
+        UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.GameReady);
     }
 }

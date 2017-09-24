@@ -27,6 +27,7 @@ public class ModesScreen : UIBaseScreen
         //m_SubMenu.OnItemHighlighted += OnSubMenuItemHighlighted;
         m_SubMenu.OnItemSelected += OnSubMenuItemSelected;
 
+        m_Menu.PreSetMenuDataForModes(GameManager.Instance.ModeData);
         m_Menu.PopulateMenu();
 
         m_ActiveMenu = m_Menu;

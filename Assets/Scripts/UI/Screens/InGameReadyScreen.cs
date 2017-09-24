@@ -1,0 +1,41 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UI;
+using Rewired;
+
+public class InGameReadyScreen : UIBaseScreen
+{
+    [SerializeField] private Text m_HeaderLabel;
+    [SerializeField] private Text m_RulesLabel;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        int modeIndex = (int)GameManager.Instance.m_Mode;
+        GameModeData modeData = GameManager.Instance.ModeData[modeIndex];
+
+        m_HeaderLabel.text = string.Format("Welcome to {0}", modeData.m_Name);
+        m_RulesLabel.text = modeData.m_Rules;
+    }
+    
+
+    // TODO all players will have to ready up here eventually
+
+    protected override void OnInputUpdate(InputActionEventData data)
+    {
+        base.OnInputUpdate(data);
+
+        switch (data.actionId)
+        {
+            case RewiredConsts.Action.UI_Confirm:
+                if (data.GetButtonDown())
+                {
+                    UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.GameHUD);
+                }
+                break;
+        }
+    }
+}
