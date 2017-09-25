@@ -7,15 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class InGameHudScreen : UIBaseScreen
 {
-    public enum eMessageAlignment { Positive, Negative };
+    public enum eMessageAlignment { Positive, Neutral, Negative };
 
     [SerializeField] private Slider m_ThrowMeter;
     [SerializeField] private Slider m_HydrationMeter;
     [SerializeField] private Text m_ScoreText;
     [SerializeField] private Text m_CongratsText;
 
-    [SerializeField] private Color m_PositiveColor;
-    [SerializeField] private Color m_NegativeColor;
+    [SerializeField] private Color[] m_MessageColors = new Color[3];
 
     public override void Initialize()
     {
@@ -65,7 +64,7 @@ public class InGameHudScreen : UIBaseScreen
 
     private void UpdateMessage(UIEvents.UpdateMessageEvent e)
     {
-        m_CongratsText.color = e.Alignment == eMessageAlignment.Positive ? m_PositiveColor : m_NegativeColor;
+        m_CongratsText.color = m_MessageColors[(int)e.Alignment];
         m_CongratsText.text = e.Message;
 
         if (e.DisplayTime > 0f)

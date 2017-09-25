@@ -15,6 +15,7 @@ public abstract class IDog : MonoBehaviour
     [SerializeField] protected Transform m_MouthTransform;
     [SerializeField] protected Collider m_CatchTrigger;
     [SerializeField] protected Animator m_Animator;
+    [SerializeField] protected ParticleSystem m_GrassParticles;
 
     [SerializeField] private Text DebugBarkText;
 
@@ -72,6 +73,11 @@ public abstract class IDog : MonoBehaviour
         m_Camera = cam;
     }
 
+    protected virtual void Awake()
+    {
+        VSEventManager.Instance.AddListener<GameplayEvents.ResetDiscEvent>(OnDiscReset);
+    }
+
     protected virtual void Start()
     {
         //OnThrowMeterUpdated += UIManager.Instance.UpdateThrowMeter;
@@ -85,6 +91,8 @@ public abstract class IDog : MonoBehaviour
     {
         //OnThrowMeterUpdated -= UIManager.Instance.UpdateThrowMeter;
         //OnHydrationMeterUpdated -= UIManager.Instance.UpdateHydration;
+
+        VSEventManager.Instance.RemoveListener<GameplayEvents.ResetDiscEvent>(OnDiscReset);
     }
 
     public virtual void GetMovement()
@@ -118,18 +126,25 @@ public abstract class IDog : MonoBehaviour
             {
                 m_Rigidbody.AddForce(m_Movement * m_Acceleration, ForceMode.Acceleration);
             }
+
+            // get thirsty!
+            if (m_Speed > m_SpeedToThirsty)
+            {
+                ModifyHydration(-m_ThirstDecay);
+                m_GrassParticles.Play();
+            }
+            else
+            {
+                m_GrassParticles.Stop();
+            }
         }
         else
         {
+            m_GrassParticles.Stop();
+
             m_Velocity =  m_Transform.forward * 10f;
             m_Velocity.y = Mathf.Lerp(m_Velocity.y, m_Rigidbody.velocity.y, Time.fixedDeltaTime * m_LerpSpeed);
             m_Velocity.Normalize();
-        }
-
-        // get thirsty!
-        if (m_Speed > m_SpeedToThirsty)
-        {
-            ModifyHydration(-m_ThirstDecay);
         }
 
         // face travel direction
@@ -180,6 +195,11 @@ public abstract class IDog : MonoBehaviour
 
     //    m_PreviousTriggerValue = trigger;
     //}
+
+    private void OnDiscReset(GameplayEvents.ResetDiscEvent e)
+    {
+        m_Disc = null;
+    }
 
     public virtual void ApplyJump()
     {
@@ -312,7 +332,7 @@ public abstract class IDog : MonoBehaviour
             m_Rigidbody.constraints = m_DefaultConstraints;
 
             // if you've caught the disc and just landed, let it be known
-            VSEventManager.Instance.TriggerEvent(new GameplayEvents.DogTouchGroundEvent(m_Disc != null, m_Transform.position));
+            //VSEventManager.Instance.TriggerEvent(new GameplayEvents.DogTouchGroundEvent(m_Disc != null, m_Transform.position));
 
             // tumble check
             float directionDot = Vector3.Dot(m_Velocity, m_Transform.forward);
@@ -360,15 +380,4 @@ public abstract class IDog : MonoBehaviour
     }
 
     public abstract void ApplySpecial();
-
-    // TODO
-    // move to Utils class
-    protected float SignedAngle(Vector3 a, Vector3 b)
-    {
-        float angle = Vector3.Angle(a, b);
-        Vector3 cross = Vector3.Cross(a, b);
-        if (cross.y < 0) angle = -angle;
-
-        return angle;
-    }
 }

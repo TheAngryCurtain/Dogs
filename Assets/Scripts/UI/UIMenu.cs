@@ -79,7 +79,8 @@ public class UIMenu : MonoBehaviour
 
     public void RefocusMenu()
     {
-        SetActiveItem(m_ListItems[0]);
+        m_ActiveIndex = 0;
+        SetActiveItem(m_ListItems[m_ActiveIndex]);
     }
 
     public void RemoveMenuFocus()

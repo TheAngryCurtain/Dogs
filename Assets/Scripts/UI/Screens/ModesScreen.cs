@@ -7,14 +7,19 @@ using Rewired;
 
 public class ModesScreen : UIBaseScreen
 {
+    // TODO move these
     public enum eMode { None = -1, Catch };
+    public enum eDifficulty { None = -1, Easy, Medium, Hard};
 
     [SerializeField] private UIMenu m_Menu;
-    [SerializeField] private UIMenu m_SubMenu;
+    [SerializeField] private UIMenu m_PlayersSubMenu;
+    [SerializeField] private UIMenu m_DifficultySubMenu;
     [SerializeField] private Text m_Description;
 
     private eMode m_PreviousMode = eMode.None;
     private eMode m_CurrentMode = eMode.None;
+    private eDifficulty m_PreviousDifficulty = eDifficulty.None;
+    private eDifficulty m_CurrentDifficulty = eDifficulty.None;
     private UIMenu m_ActiveMenu;
 
     public override void Initialize()
@@ -25,7 +30,8 @@ public class ModesScreen : UIBaseScreen
         m_Menu.OnItemSelected += OnMenuItemSelected;
 
         //m_SubMenu.OnItemHighlighted += OnSubMenuItemHighlighted;
-        m_SubMenu.OnItemSelected += OnSubMenuItemSelected;
+        m_PlayersSubMenu.OnItemSelected += OnPlayerSubMenuSelected;
+        m_DifficultySubMenu.OnItemSelected += OnDifficultySubMenuSelected;
 
         m_Menu.PreSetMenuDataForModes(GameManager.Instance.ModeData);
         m_Menu.PopulateMenu();
@@ -39,7 +45,8 @@ public class ModesScreen : UIBaseScreen
         m_Menu.OnItemSelected -= OnMenuItemSelected;
 
         //m_SubMenu.OnItemHighlighted -= OnSubMenuItemHighlighted;
-        m_SubMenu.OnItemSelected -= OnSubMenuItemSelected;
+        m_PlayersSubMenu.OnItemSelected -= OnPlayerSubMenuSelected;
+        m_DifficultySubMenu.OnItemSelected -= OnDifficultySubMenuSelected;
 
         base.Shutdown();
     }
@@ -53,18 +60,24 @@ public class ModesScreen : UIBaseScreen
             case RewiredConsts.Action.UI_Cancel:
                 if (data.GetButtonDown())
                 {
-                    if (m_CurrentMode != eMode.None)
+                    m_ActiveMenu.RemoveMenuFocus();
+                    m_ActiveMenu.ClearMenu();
+
+                    if (m_ActiveMenu == m_PlayersSubMenu)
                     {
                         m_CurrentMode = m_PreviousMode;
-                        m_ActiveMenu.RemoveMenuFocus();
-
-                        m_ActiveMenu.ClearMenu();
-
+                        m_ActiveMenu = m_DifficultySubMenu;
+                    }
+                    else if (m_ActiveMenu == m_DifficultySubMenu)
+                    {
+                        m_CurrentDifficulty = m_PreviousDifficulty;
                         m_ActiveMenu = m_Menu;
-                        m_ActiveMenu.RefocusMenu();
 
                         m_HasSubSectionFocus = false;
                     }
+
+                    //m_ActiveMenu.PopulateMenu();
+                    m_ActiveMenu.RefocusMenu();
                 }
                 break;
         }
@@ -78,7 +91,7 @@ public class ModesScreen : UIBaseScreen
         m_CurrentMode = (eMode)index;
         m_ActiveMenu.RemoveMenuFocus();
 
-        m_ActiveMenu = m_SubMenu;
+        m_ActiveMenu = m_DifficultySubMenu;
         m_ActiveMenu.PopulateMenu();
         m_ActiveMenu.RefocusMenu();
 
@@ -90,13 +103,26 @@ public class ModesScreen : UIBaseScreen
         m_Description.text = item.m_Description;
     }
 
-    public void OnSubMenuItemSelected(int index)
+    public void OnPlayerSubMenuSelected(int index)
     {
         // set this here for now, but will need game data structure later
         GameManager.Instance.m_NumOfPlayers = index + 1;
         GameManager.Instance.m_Mode = m_CurrentMode;
+        GameManager.Instance.m_Difficulty = m_CurrentDifficulty;
 
         UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.Locations);
+    }
+
+    public void OnDifficultySubMenuSelected(int index)
+    {
+        m_PreviousDifficulty = m_CurrentDifficulty;
+        m_CurrentDifficulty = (eDifficulty)index;
+
+        m_ActiveMenu.RemoveMenuFocus();
+        //m_ActiveMenu.ClearMenu();
+
+        m_ActiveMenu = m_PlayersSubMenu;
+        m_ActiveMenu.PopulateMenu();
     }
 
     public void OnSubMenuItemHighlighted(UIMenuItemInfo item)

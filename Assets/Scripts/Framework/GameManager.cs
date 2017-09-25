@@ -8,10 +8,12 @@ public class GameManager : Singleton<GameManager>
     public int m_NumOfPlayers;
     public int m_LocationIndex;
     public ModesScreen.eMode m_Mode;
+    public ModesScreen.eDifficulty m_Difficulty;
 
     [SerializeField] private GameObject m_SmallDogPrefab;
     [SerializeField] private GameObject m_DiscPrefab;
     [SerializeField] private GameObject m_launcherPrefab;
+    [SerializeField] private GameObject m_DiscTrackerPrefab;
 
     [SerializeField] private GameObject m_GamePrefab;
     [SerializeField] private GameModeData[] m_ModeData;
@@ -37,13 +39,16 @@ public class GameManager : Singleton<GameManager>
     private void InitGame(GameplayEvents.OnGameStartEvent e)
     {
         // Spawn Player and World Objects
-        GameObject dogObj = (GameObject)Instantiate(m_SmallDogPrefab, new Vector3(20f, 0.25f, 20f), Quaternion.identity);
+        Instantiate(m_launcherPrefab, null); // spawn at it's prefab position?
+
+        Instantiate(m_DiscTrackerPrefab, null);
+        
+        GameObject dogObj = (GameObject)Instantiate(m_SmallDogPrefab, new Vector3(66f, 0.25f, 51f), Quaternion.identity);
         VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnPlayerSpawnedEvent(dogObj));
 
-        GameObject discObj = (GameObject)Instantiate(m_DiscPrefab, new Vector3(20f, 5f, 20f), Quaternion.identity);
+        GameObject discObj = (GameObject)Instantiate(m_DiscPrefab, new Vector3(66f, 5f, 51f), Quaternion.identity);
         VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnDiscSpawnedEvent(discObj));
-
-        Instantiate(m_launcherPrefab, null); // spawn at it's prefab position?
+        
 
         // Spawn Game
         GameObject gameObj = (GameObject)Instantiate(m_GamePrefab, Vector3.zero, Quaternion.identity);
@@ -66,7 +71,6 @@ public class GameManager : Singleton<GameManager>
 
 
         // TODO
-        // Add in a countdown text box to the HUD and set it to countdown to start the mode
         // then, make sure the disc and launcher are set up to fire (maybe a "Ready?" text, then a delay and "Catch!" right before launching)
         // Then, once the catch is made, award the points (DONE)_and reset the disc
         // Once the 3 misses are done, end the game

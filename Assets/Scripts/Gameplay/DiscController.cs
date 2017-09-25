@@ -25,12 +25,12 @@ public class DiscController : MonoBehaviour
 
     private void Awake()
     {
-        VSEventManager.Instance.AddListener<GameplayEvents.DogTouchGroundEvent>(DogTouchGroundAfterCatch);
+        //VSEventManager.Instance.AddListener<GameplayEvents.DogTouchGroundEvent>(DogTouchGroundAfterCatch);
     }
 
     private void OnDestroy()
     {
-        VSEventManager.Instance.RemoveListener<GameplayEvents.DogTouchGroundEvent>(DogTouchGroundAfterCatch);
+        //VSEventManager.Instance.RemoveListener<GameplayEvents.DogTouchGroundEvent>(DogTouchGroundAfterCatch);
     }
 
 #if UNITY_EDITOR
@@ -101,17 +101,17 @@ public class DiscController : MonoBehaviour
         m_Collider.enabled = false;
     }
 
-    private void DogTouchGroundAfterCatch(GameplayEvents.DogTouchGroundEvent e)
-    {
-        if (m_SafeArea == null)
-        {
-            m_SafeArea = (GameObject)Instantiate(m_SafeAreaPrefab);
-        }
+    //private void DogTouchGroundAfterCatch(GameplayEvents.DogTouchGroundEvent e)
+    //{
+    //    if (m_SafeArea == null)
+    //    {
+    //        m_SafeArea = (GameObject)Instantiate(m_SafeAreaPrefab);
+    //    }
 
-        // preserve the saved y value
-        e.LandPosition.y = m_SafeAreaPrefab.transform.position.y;
-        m_SafeArea.transform.position = e.LandPosition;
-    }
+    //    // preserve the saved y value
+    //    e.LandPosition.y = m_SafeAreaPrefab.transform.position.y;
+    //    m_SafeArea.transform.position = e.LandPosition;
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {

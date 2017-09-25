@@ -14,28 +14,44 @@ public class DiscLauncher : MonoBehaviour
     private void Awake()
     {
         VSEventManager.Instance.AddListener<GameplayEvents.OnDiscSpawnedEvent>(OnDiscSpawned);
+        VSEventManager.Instance.AddListener<GameplayEvents.LaunchDiscEvent>(LaunchDiscRequest);
+        VSEventManager.Instance.AddListener<GameplayEvents.ResetDiscEvent>(ResetDiscRequest);
     }
 
     private void OnDestroy()
     {
         VSEventManager.Instance.RemoveListener<GameplayEvents.OnDiscSpawnedEvent>(OnDiscSpawned);
+        VSEventManager.Instance.RemoveListener<GameplayEvents.LaunchDiscEvent>(LaunchDiscRequest);
+        VSEventManager.Instance.RemoveListener<GameplayEvents.ResetDiscEvent>(ResetDiscRequest);
+    }
+
+    private void LaunchDiscRequest(GameplayEvents.LaunchDiscEvent e)
+    {
+        Launch(e.MinDiscForce, e.MaxDiscForce, e.MaxDiscCurve);
+    }
+
+    private void ResetDiscRequest(GameplayEvents.ResetDiscEvent e)
+    {
+        Reset();
     }
 
     private void OnDiscSpawned(GameplayEvents.OnDiscSpawnedEvent e)
     {
         m_Disc = e.DiscObj.GetComponent<DiscController>();
+        Reset();
     }
 
-    private void Launch()
+    private void Launch(float min, float max, float curve)
     {
         m_Disc.transform.position = m_DiscLaunch.position;
 
-        //float randThrow = UnityEngine.Random.Range(100f, 115f);
-        //float randCurve = UnityEngine.Random.Range(-0.3f, 0.3f);
+        float randThrow = UnityEngine.Random.Range(min, max);
+        float randCurve = UnityEngine.Random.Range(-curve, curve);
 
-        //Debug.LogFormat("Throw Force: {0}, Curve Amount: {1}", randThrow, randCurve);
+        Debug.LogFormat("Difficulty: {0} > min: {1}, max: {2}, curve: {3} >>>>> rand throw: {4}, rand curve: {5}",
+            GameManager.Instance.m_Difficulty.ToString(), min, max, curve, randThrow, randCurve);
 
-        m_Disc.Throw(m_DiscLaunch.forward, 65f, 0f);
+        m_Disc.Throw(m_DiscLaunch.forward, randThrow, randCurve);
     }
 
     private void Reset()

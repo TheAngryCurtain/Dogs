@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MissContainer : MonoBehaviour
 {
-    [SerializeField] private Transform m_Transform;
-    [SerializeField] private GameObject m_MissIconPrefab;
+    [SerializeField] private GameObject[] m_MissMarkers;
 
     private void Awake()
     {
@@ -19,14 +18,9 @@ public class MissContainer : MonoBehaviour
 
     private void UpdateMisses(UIEvents.UpdateMissedCatchEvent e)
     {
-        for (int i = 0; i < m_Transform.childCount; i++)
-        {
-            Destroy(m_Transform.GetChild(i).gameObject);
-        }
-
         for (int i = 0; i < e.Misses; i++)
         {
-            Instantiate(m_MissIconPrefab, m_Transform);
+            m_MissMarkers[i].SetActive(true);
         }
     }
 }

@@ -34,6 +34,8 @@ public class GameplayEvents
         }
     }
 
+
+
     public class OnLevelLoadedEvent : VSGameEvent
     {
         public OnLevelLoadedEvent()
@@ -67,6 +69,28 @@ public class GameplayEvents
     public class DiscThrownEvent : VSGameEvent
     {
         public DiscThrownEvent()
+        {
+
+        }
+    }
+
+    public class LaunchDiscEvent : VSGameEvent
+    {
+        public float MinDiscForce;
+        public float MaxDiscForce;
+        public float MaxDiscCurve;
+
+        public LaunchDiscEvent(float minForce, float maxForce, float curve)
+        {
+            MinDiscForce = minForce;
+            MaxDiscForce = maxForce;
+            MaxDiscCurve = curve;
+        }
+    }
+
+    public class ResetDiscEvent : VSGameEvent
+    {
+        public ResetDiscEvent()
         {
 
         }

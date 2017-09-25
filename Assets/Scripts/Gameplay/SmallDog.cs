@@ -29,7 +29,7 @@ public class SmallDog : IDog
             // add a side spin to the back flip
             if (m_Movement != Vector3.zero)
             {
-                float angle = SignedAngle(m_Rigidbody.velocity, m_Movement);
+                float angle = Utils.SignedAngle(m_Rigidbody.velocity, m_Movement);
                 if (Mathf.Abs(angle) > m_MinAngle)
                 {
                     m_Rigidbody.AddTorque(m_Transform.up * (angle / 2f));

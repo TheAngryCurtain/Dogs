@@ -12,28 +12,28 @@ public class DiscTracker : MonoBehaviour
     [SerializeField] private float m_MinScale;
     [SerializeField] private float m_MaxScale;
 
-    private DiscController m_discController;
     private Vector3 m_Position;
     private Vector3 m_Scale = Vector3.one;
 
     private void Awake()
     {
-        m_discController = m_Disc.GetComponent<DiscController>();
-        if (m_discController == null)
-        {
-            Debug.LogError("The Disc lacks a disc controller");
-        }
-
+        VSEventManager.Instance.AddListener<GameplayEvents.OnDiscSpawnedEvent>(OnDiscSpawned);
         VSEventManager.Instance.AddListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchedGround);
         VSEventManager.Instance.AddListener<GameplayEvents.DogCatchDiscEvent>(OnDiscCaught);
-        VSEventManager.Instance.AddListener<GameplayEvents.DiscThrownEvent>(OnDiscThrown);
+        VSEventManager.Instance.AddListener<GameplayEvents.LaunchDiscEvent>(OnDiscLaunched);
     }
 
     private void OnDestroy()
     {
+        VSEventManager.Instance.RemoveListener<GameplayEvents.OnDiscSpawnedEvent>(OnDiscSpawned);
         VSEventManager.Instance.RemoveListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchedGround);
         VSEventManager.Instance.RemoveListener<GameplayEvents.DogCatchDiscEvent>(OnDiscCaught);
-        VSEventManager.Instance.RemoveListener<GameplayEvents.DiscThrownEvent>(OnDiscThrown);
+        VSEventManager.Instance.RemoveListener<GameplayEvents.LaunchDiscEvent>(OnDiscLaunched);
+    }
+
+    private void OnDiscSpawned(GameplayEvents.OnDiscSpawnedEvent e)
+    {
+        m_Disc = e.DiscObj.transform;
     }
 
     private void OnDiscTouchedGround(GameplayEvents.DiscTouchGroundEvent e)
@@ -46,7 +46,7 @@ public class DiscTracker : MonoBehaviour
         ShowTarget(false);
     }
 
-    private void OnDiscThrown(GameplayEvents.DiscThrownEvent e)
+    private void OnDiscLaunched(GameplayEvents.LaunchDiscEvent e)
     {
         ShowTarget(true);
     }

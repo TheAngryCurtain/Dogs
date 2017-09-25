@@ -7,25 +7,96 @@ Direct3D:
     VRAM:     2016 MB
     Driver:   22.21.13.8205
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
-Loading C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
-Platform assembly: C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.027 seconds
-Platform assembly: C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\Mike\Downloads\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Rewired_Core.dll (this message is harmless)
+Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Rewired_Core.dll into Unity Child Domain
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Rewired_Windows_Lib.dll (this message is harmless)
+Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Rewired_Windows_Lib.dll into Unity Child Domain
+- Completed reload, in  0.032 seconds
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.528911 ms
+UnloadTime: 1.387644 ms
+Non platform assembly: data-12905DA8 (this message is harmless)
+Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-12905DA8.dll
+Non platform assembly: data-12A09008 (this message is harmless)
+Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-12A09008.dll
+Non platform assembly: data-14ECF020 (this message is harmless)
+Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-14ECF020.dll
+Rewired: Searching for compatible XInput library...
+Rewired: Found Xinput1_4.dll.
+Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.Xml.dll (this message is harmless)
 Setting up 3 worker threads for Enlighten.
-  Thread -> id: 22c4 -> priority: 1 
-  Thread -> id: 3b9c -> priority: 1 
-  Thread -> id: 244c -> priority: 1 
+  Thread -> id: 2604 -> priority: 1 
+  Thread -> id: 1e88 -> priority: 1 
+  Thread -> id: 11a0 -> priority: 1 
+Shutting down screen: Splash Screen(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Shutting down screen: Main Menu(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Shutting down screen: Modes(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Shutting down screen: Locations(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.099525 ms
+
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 7876.
+Total: 15.052330 ms (FindLiveObjects: 0.484393 ms CreateObjectMapping: 0.238847 ms MarkObjects: 13.007856 ms  DeleteObjects: 1.320068 ms)
+
+Shutting down screen: Loading Screen(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Shutting down screen: InGame Ready(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+GAME OVER
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Destroyed Singleton: UI Manager
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Destroyed Singleton: Event Manager
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Destroyed Singleton: Game Manager
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Destroyed Singleton: Game Manager
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Destroyed Singleton: New Game Object
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Destroyed Singleton: New Game Object
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
