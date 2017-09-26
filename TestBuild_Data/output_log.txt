@@ -21,28 +21,36 @@ Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass
 Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Rewired_Core.dll into Unity Child Domain
 Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Rewired_Windows_Lib.dll (this message is harmless)
 Loading C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\Rewired_Windows_Lib.dll into Unity Child Domain
-- Completed reload, in  0.032 seconds
+- Completed reload, in  0.030 seconds
 Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.387644 ms
-Non platform assembly: data-12905DA8 (this message is harmless)
-Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-12905DA8.dll
-Non platform assembly: data-12A09008 (this message is harmless)
-Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-12A09008.dll
-Non platform assembly: data-14ECF020 (this message is harmless)
-Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-14ECF020.dll
+UnloadTime: 1.417937 ms
+Non platform assembly: data-13018B90 (this message is harmless)
+Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-13018B90.dll
+Non platform assembly: data-130F4008 (this message is harmless)
+Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-130F4008.dll
+Non platform assembly: data-04777020 (this message is harmless)
+Fallback handler could not load library C:/Users/Mike/Documents/Unity Projects/Grass_Smooth Cut/Grass_Smooth Cut/TestBuild_Data/Mono/data-04777020.dll
 Rewired: Searching for compatible XInput library...
 Rewired: Found Xinput1_4.dll.
 Platform assembly: C:\Users\Mike\Documents\Unity Projects\Grass_Smooth Cut\Grass_Smooth Cut\TestBuild_Data\Managed\System.Xml.dll (this message is harmless)
 Setting up 3 worker threads for Enlighten.
-  Thread -> id: 2604 -> priority: 1 
-  Thread -> id: 1e88 -> priority: 1 
-  Thread -> id: 11a0 -> priority: 1 
+  Thread -> id: 30f4 -> priority: 1 
+  Thread -> id: f04 -> priority: 1 
+  Thread -> id: 1b9c -> priority: 1 
 Shutting down screen: Splash Screen(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Shutting down screen: Main Menu(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Shutting down screen: Settings(Clone)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -59,16 +67,28 @@ Shutting down screen: Locations(Clone)
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.099525 ms
+UnloadTime: 3.053458 ms
 
-Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 7876.
-Total: 15.052330 ms (FindLiveObjects: 0.484393 ms CreateObjectMapping: 0.238847 ms MarkObjects: 13.007856 ms  DeleteObjects: 1.320068 ms)
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 7890.
+Total: 14.712410 ms (FindLiveObjects: 0.485559 ms CreateObjectMapping: 0.169232 ms MarkObjects: 12.871538 ms  DeleteObjects: 1.185206 ms)
 
 Shutting down screen: Loading Screen(Clone)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Shutting down screen: InGame Ready(Clone)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Difficulty: Hard > min: 50, max: 65, curve: 0.25 >>>>> rand throw: 64.49508, rand curve: -0.2470031
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Difficulty: Hard > min: 50, max: 65, curve: 0.25 >>>>> rand throw: 51.47858, rand curve: -0.142882
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Difficulty: Hard > min: 50, max: 65, curve: 0.25 >>>>> rand throw: 64.0565, rand curve: 0.1394816
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -80,15 +100,15 @@ Destroyed Singleton: UI Manager
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
+Destroyed Singleton: Game Manager
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Destroyed Singleton: Game Manager
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
 Destroyed Singleton: Event Manager
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Destroyed Singleton: Game Manager
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Destroyed Singleton: Game Manager
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 

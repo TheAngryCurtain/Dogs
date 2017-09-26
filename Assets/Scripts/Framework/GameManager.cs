@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    // TODO really need a data structure for all of this...
     public int m_NumOfPlayers;
     public int m_LocationIndex;
+    public UI.Enums.ScreenId m_ScreenIDToLoad;
     public ModesScreen.eMode m_Mode;
     public ModesScreen.eDifficulty m_Difficulty;
 
@@ -43,10 +45,10 @@ public class GameManager : Singleton<GameManager>
 
         Instantiate(m_DiscTrackerPrefab, null);
         
-        GameObject dogObj = (GameObject)Instantiate(m_SmallDogPrefab, new Vector3(66f, 0.25f, 51f), Quaternion.identity);
+        GameObject dogObj = (GameObject)Instantiate(m_SmallDogPrefab, null);
         VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnPlayerSpawnedEvent(dogObj));
 
-        GameObject discObj = (GameObject)Instantiate(m_DiscPrefab, new Vector3(66f, 5f, 51f), Quaternion.identity);
+        GameObject discObj = (GameObject)Instantiate(m_DiscPrefab, null);
         VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnDiscSpawnedEvent(discObj));
         
 
@@ -67,8 +69,7 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
 
-
-
+        game.Init();
 
         // TODO
         // then, make sure the disc and launcher are set up to fire (maybe a "Ready?" text, then a delay and "Catch!" right before launching)
@@ -83,7 +84,7 @@ public class GameManager : Singleton<GameManager>
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
         // Notify Level Loaded
-        VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnLevelLoadedEvent());
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnLevelLoadedEvent(scene.buildIndex));
 
 #if UNITY_EDITOR
         // Rebuild lighting.

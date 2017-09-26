@@ -12,7 +12,8 @@
             Locations,
             Loading,
             GameReady,
-            GameHUD
+            GameHUD,
+            GameResults
         }
 
         public enum UIScreenAnimState

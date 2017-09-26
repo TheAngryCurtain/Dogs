@@ -65,12 +65,12 @@ public class ModesScreen : UIBaseScreen
 
                     if (m_ActiveMenu == m_PlayersSubMenu)
                     {
-                        m_CurrentMode = m_PreviousMode;
+                        m_CurrentDifficulty = m_PreviousDifficulty;
                         m_ActiveMenu = m_DifficultySubMenu;
                     }
                     else if (m_ActiveMenu == m_DifficultySubMenu)
                     {
-                        m_CurrentDifficulty = m_PreviousDifficulty;
+                        m_CurrentMode = m_PreviousMode;
                         m_ActiveMenu = m_Menu;
 
                         m_HasSubSectionFocus = false;

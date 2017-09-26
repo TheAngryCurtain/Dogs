@@ -25,8 +25,14 @@ public class CameraController : MonoBehaviour
 
     private void OnLevelLoaded(GameplayEvents.OnLevelLoadedEvent e)
     {
-        // just look at the dish I guess when the level loads
-        transform.position = new Vector3(49.75f, 0.85f, 40);
+        if (e.SceneID == 2)
+        {
+            // just look at the dish I guess when the level loads
+            transform.position = new Vector3(49.75f, 0.85f, 40);
+            transform.rotation = Quaternion.identity;
+
+            m_CurrentYaw = -90;
+        }
     }
 
     public void SetFollowTarget(Transform target)

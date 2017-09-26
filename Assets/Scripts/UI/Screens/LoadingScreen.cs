@@ -15,11 +15,12 @@ public class LoadingScreen : UIBaseScreen
     {
         base.Initialize();
 
-        int sceneIndex = GameManager.Instance.m_LocationIndex + 1; // TODO need a map of scene names to indices
-        StartCoroutine(LoadLevel(sceneIndex));
+        int sceneIndex = GameManager.Instance.m_LocationIndex; // TODO need a map of scene names to indices
+        UI.Enums.ScreenId id = GameManager.Instance.m_ScreenIDToLoad; // TODO need a data structure for this data...
+        StartCoroutine(LoadLevel(sceneIndex, id));
     }
 
-    private IEnumerator LoadLevel(int sceneIndex)
+    private IEnumerator LoadLevel(int sceneIndex, UI.Enums.ScreenId id)
     {
         m_AsyncLoadOp = SceneManager.LoadSceneAsync(sceneIndex);
 
@@ -30,6 +31,6 @@ public class LoadingScreen : UIBaseScreen
             yield return null;
         }
 
-        UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.GameReady);
+        UIManager.Instance.TransitionToScreen(id);
     }
 }

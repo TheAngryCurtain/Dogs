@@ -28,7 +28,10 @@ public class CameraManager : Singleton<CameraManager>
 
     private void OnLevelLoaded(GameplayEvents.OnLevelLoadedEvent e)
     {
-        m_CamController.enabled = true;
+        if (e.SceneID == 2)
+        {
+            m_CamController.enabled = true;
+        }
     }
 
     private void OnDogSpawned(GameplayEvents.OnPlayerSpawnedEvent e)

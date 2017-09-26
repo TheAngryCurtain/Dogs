@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UI;
-using UnityEngine.SceneManagement;
 
 public class InGameHudScreen : UIBaseScreen
 {

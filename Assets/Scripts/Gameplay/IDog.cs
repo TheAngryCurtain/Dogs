@@ -83,6 +83,9 @@ public abstract class IDog : MonoBehaviour
         //OnThrowMeterUpdated += UIManager.Instance.UpdateThrowMeter;
         //OnHydrationMeterUpdated += UIManager.Instance.UpdateHydration;
 
+        // TODO do this better
+        m_Transform.position = new Vector3(66f, 0.25f, 51f);
+
         m_CurrentJumpForce = m_VariableJumpForce;
         ModifyHydration(m_MaxHydration);
     }

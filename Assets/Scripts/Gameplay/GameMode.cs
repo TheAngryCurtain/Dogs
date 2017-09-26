@@ -14,14 +14,14 @@ public abstract class GameMode
 public class CatchMode : GameMode
 {
     private int m_MaxNumDrops = 3;
-    private int m_CurrentNumDrops = 0;
-    private float m_Score = 0;
+    private int m_CurrentNumDrops;
+    private float m_Score;
     private string[] m_Messages = new string[]
     {
         "Good!", "Great!", "Excellent!"
     };
 
-    private int m_CountDownReamining = 3;
+    private int m_CountDownRemaining;
 
     public float m_MaxDiscDistanceForce = 65f;
     public float[] m_DifficultyMinDistForces = new float[] { 60f, 55f, 50f };
@@ -30,9 +30,14 @@ public class CatchMode : GameMode
     public override void Init()
     {
         VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(0));
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.ResetDiscEvent());
 
         VSEventManager.Instance.AddListener<GameplayEvents.DogCatchDiscEvent>(OnDogCatchDisc);
         VSEventManager.Instance.AddListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchGround);
+
+        m_CountDownRemaining = 3;
+        m_CurrentNumDrops = 0;
+        m_Score = 0;
 
         StartCountDown();
     }
@@ -41,7 +46,7 @@ public class CatchMode : GameMode
     // making a intermediate function to be called with ActAfterDelay
     private void StartCountDown()
     {
-        CountDown(m_CountDownReamining, m_CountDownReamining.ToString(), "Catch!", LaunchDisc);
+        CountDown(m_CountDownRemaining, m_CountDownRemaining.ToString(), "Catch!", LaunchDisc);
     }
 
     // here is another one
@@ -56,7 +61,7 @@ public class CatchMode : GameMode
         if (interations > 0)
         {
             VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMessageEvent(delayMessage, 1f, InGameHudScreen.eMessageAlignment.Neutral));
-            m_CountDownReamining -= 1;
+            m_CountDownRemaining -= 1;
 
             Utils.Instance.ActAfterDelay(1f, StartCountDown);
         }
@@ -81,6 +86,8 @@ public class CatchMode : GameMode
     {
         VSEventManager.Instance.RemoveListener<GameplayEvents.DogCatchDiscEvent>(OnDogCatchDisc);
         VSEventManager.Instance.RemoveListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchGround);
+
+        UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.GameResults);
     }
 
     // Mode specific listening functions

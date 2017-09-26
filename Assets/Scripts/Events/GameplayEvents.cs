@@ -34,13 +34,21 @@ public class GameplayEvents
         }
     }
 
+    public class OnGameModeResetEvent : VSGameEvent
+    {
+        public OnGameModeResetEvent()
+        {
 
+        }
+    }
 
     public class OnLevelLoadedEvent : VSGameEvent
     {
-        public OnLevelLoadedEvent()
-        {
+        public int SceneID;
 
+        public OnLevelLoadedEvent(int id)
+        {
+            SceneID = id;
         }
     }
 
