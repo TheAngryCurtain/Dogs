@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using UI;
 using UnityEngine.SceneManagement;
 
+// TODO move this stuff into the scene loader
+// find a way to return the progress on an async scene load
+
 public class LoadingScreen : UIBaseScreen
 {
     [SerializeField] private Slider m_LoadingSlider;

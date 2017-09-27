@@ -37,7 +37,7 @@ public class LocationsScreen : UIBaseScreen
 
     public void OnItemSelected(int index)
     {
-        UIManager.Instance.LoadLevelWithScreen(index + 1, UI.Enums.ScreenId.GameReady);
+        UIManager.Instance.LoadLevelWithScreen(index + 2, UI.Enums.ScreenId.GameReady);
     }
 
     public void OnItemHighlighted(UIMenuItemInfo item)

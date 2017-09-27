@@ -52,6 +52,16 @@ public class GameplayEvents
         }
     }
 
+    public class RequestSceneChangeEvent : VSGameEvent
+    {
+        public int SceneIndex;
+
+        public RequestSceneChangeEvent(int index)
+        {
+            SceneIndex = index;
+        }
+    }
+
     public class DogCatchDiscEvent : VSGameEvent
     {
         public IDog.eActionType ActionType;

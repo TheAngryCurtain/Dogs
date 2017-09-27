@@ -27,6 +27,9 @@ public class GameManager : Singleton<GameManager>
 
         // TODO should probably create and move this to a Game Monobehaviour
         VSEventManager.Instance.AddListener<GameplayEvents.OnGameStartEvent>(InitGame);
+
+        // move to menu scene
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.RequestSceneChangeEvent((int)eScene.Main));
     }
 
     public override void OnDestroy()

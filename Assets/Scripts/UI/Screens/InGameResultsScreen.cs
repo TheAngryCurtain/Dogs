@@ -24,14 +24,14 @@ public class InGameResultsScreen : UIBaseScreen
             case RewiredConsts.Action.UI_Confirm: // Retry
                 if (data.GetButtonDown())
                 {
-                    UIManager.Instance.LoadLevelWithScreen(1, UI.Enums.ScreenId.GameReady); // TODO set this up a better way. 1 is dog park
+                    UIManager.Instance.LoadLevelWithScreen((int)eScene.DogPark, UI.Enums.ScreenId.GameReady); // TODO set this up a better way. 1 is dog park
                 }
                 break;
 
             case RewiredConsts.Action.UI_Cancel: // Exit
                 if (data.GetButtonDown())
                 {
-                    UIManager.Instance.LoadLevelWithScreen(0, UI.Enums.ScreenId.MainMenu);
+                    UIManager.Instance.LoadLevelWithScreen((int)eScene.Main, UI.Enums.ScreenId.MainMenu);
                 }
                 break;
         }
