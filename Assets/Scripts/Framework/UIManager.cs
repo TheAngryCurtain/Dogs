@@ -46,15 +46,8 @@ public class UIManager : Singleton<UIManager>
 
     void Start ()
     {
-        DontDestroyOnLoad(m_Canvas);
-
         TransitionToScreen(ScreenId.Splash);
     }
-	
-	void Update ()
-    {
-		
-	}
 
     /// <summary>
     /// Validate that any serialized fields are properly set, and that

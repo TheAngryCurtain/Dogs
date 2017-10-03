@@ -10,7 +10,6 @@ public class CameraManager : Singleton<CameraManager>
 
     private void Start()
     {
-        DontDestroyOnLoad(m_Camera);
         m_CamController = m_Camera.gameObject.GetComponent<CameraController>();
         m_CamController.enabled = false;
 

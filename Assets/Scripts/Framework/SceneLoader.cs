@@ -9,8 +9,6 @@ public class SceneLoader : MonoBehaviour
 {
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-
         VSEventManager.Instance.AddListener<GameplayEvents.RequestSceneChangeEvent>(OnSceneChangeRequested);
     }
 
