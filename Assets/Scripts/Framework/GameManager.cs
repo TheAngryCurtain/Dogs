@@ -19,7 +19,11 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private GameObject m_GamePrefab;
     [SerializeField] private GameModeData[] m_ModeData;
+
+    private Game m_Game;
+
     public GameModeData[] ModeData { get { return m_ModeData; } }
+    public Game CurrentGame { get { return m_Game; } }
 
     private void Start()
     {
@@ -57,13 +61,13 @@ public class GameManager : Singleton<GameManager>
 
         // Spawn Game
         GameObject gameObj = (GameObject)Instantiate(m_GamePrefab, Vector3.zero, Quaternion.identity);
-        Game game = gameObj.GetComponent<Game>();
+        m_Game = gameObj.GetComponent<Game>();
 
         // Setup Mode
         switch (m_Mode)
         {
             case ModesScreen.eMode.Catch:
-                game.Setup(new CatchMode());
+                m_Game.Setup(new CatchMode());
                 break;
 
             default:
@@ -72,7 +76,7 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
 
-        game.Init();
+        m_Game.Init();
 
         // TODO
         // then, make sure the disc and launcher are set up to fire (maybe a "Ready?" text, then a delay and "Catch!" right before launching)

@@ -7,6 +7,8 @@ public class Game : MonoBehaviour
     private GameMode m_GameMode;
     private bool m_Complete;
 
+    public GameMode Mode { get { return m_GameMode; } }
+
     public void Setup(GameMode mode)
     {
         m_GameMode = mode;
