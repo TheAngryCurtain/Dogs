@@ -194,9 +194,15 @@ public class CatchMode : GameMode
             float catchPercent = totalCatches / (float)m_TotalThrows;
             m_Collection.UpdateStat(StatsCollection.eStatType.CatchPercent, catchPercent);
 
-            // TODO
-            // need to save high score so that it can be loaded and compared to round score
+            // for now, save high score in playerprefs
+            int highScore = PlayerPrefs.GetInt("DogsTM_HighScore");
+            if (m_Score > highScore)
+            {
+                highScore = (int)m_Score;
+                PlayerPrefs.SetInt("DogsTM_HighScore", highScore);
+            }
 
+            m_Collection.UpdateStat(StatsCollection.eStatType.HighScore, highScore);
             m_Collection.UpdateStat(StatsCollection.eStatType.Score, m_Score);
             m_Collection.UpdateStat(StatsCollection.eStatType.Difficulty, (int)GameManager.Instance.m_Difficulty);
         }
