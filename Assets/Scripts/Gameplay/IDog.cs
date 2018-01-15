@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public abstract class IDog : MonoBehaviour
 {
     public enum eActionType { None, Jump, Special }
+    public enum eSingleAudioClip { Bark };
 
     //public System.Action<float> OnThrowMeterUpdated;
 
@@ -16,8 +17,11 @@ public abstract class IDog : MonoBehaviour
     [SerializeField] protected Collider m_CatchTrigger;
     [SerializeField] protected Animator m_Animator;
     [SerializeField] protected ParticleSystem m_GrassParticles;
+    [SerializeField] protected AudioSource m_LoopingAudioSource;
+    [SerializeField] protected AudioSource m_SingleAudioSource;
 
     [SerializeField] private Text DebugBarkText;
+    [SerializeField] private AudioClip[] m_BarkClips;
 
     [SerializeField] protected float m_Acceleration = 10f;
     [SerializeField] protected float m_MaxSpeed = 6f;
@@ -140,6 +144,15 @@ public abstract class IDog : MonoBehaviour
             {
                 m_GrassParticles.Stop();
             }
+
+            // audio
+            if (!m_LoopingAudioSource.isPlaying)
+            {
+                m_LoopingAudioSource.Play();
+            }
+
+            m_LoopingAudioSource.pitch = m_Speed / m_MaxSpeed;
+            m_LoopingAudioSource.volume = m_Speed / m_MaxSpeed;
         }
         else
         {
@@ -148,6 +161,12 @@ public abstract class IDog : MonoBehaviour
             m_Velocity =  m_Transform.forward * 10f;
             m_Velocity.y = Mathf.Lerp(m_Velocity.y, m_Rigidbody.velocity.y, Time.fixedDeltaTime * m_LerpSpeed);
             m_Velocity.Normalize();
+
+            // audio
+            if (m_LoopingAudioSource.isPlaying)
+            {
+                m_LoopingAudioSource.Stop();
+            }
         }
 
         // face travel direction
@@ -369,10 +388,16 @@ public abstract class IDog : MonoBehaviour
     {
         if (!m_CanDrink && Input.GetButtonDown("Bark"))
         {
-            int randIndex = UnityEngine.Random.Range(0, m_Vocab.Length);
-            DebugBarkText.text = m_Vocab[randIndex];
-            StartCoroutine(ClearBark());
+            //int randIndex = UnityEngine.Random.Range(0, m_Vocab.Length);
+            //DebugBarkText.text = m_Vocab[randIndex];
+            //StartCoroutine(ClearBark());
             //Debug.Log(m_Vocab[randIndex]);
+
+            int randBark = UnityEngine.Random.Range(0, m_BarkClips.Length);
+            AudioClip bark = m_BarkClips[randBark];
+
+            m_SingleAudioSource.clip = bark;
+            m_SingleAudioSource.Play();
         }
     }
 

@@ -101,6 +101,9 @@ public class UIMenu : MonoBehaviour
                 if (value != 0f && m_MenuItems[m_ActiveIndex].m_Togglable)
                 {
                     // will need to figure out how to cut out of this. will likely need to change the switch to an if/else
+
+                    // audio
+                    VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestUIAudioEvent(true, AudioManager.eUIClip.Navigate));
                 }
                 break;
 
@@ -124,6 +127,9 @@ public class UIMenu : MonoBehaviour
 
                     SetActiveItem(m_ListItems[m_ActiveIndex]);
                     m_CurrentTime = m_ScrollDelay;
+
+                    // audio
+                    VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestUIAudioEvent(true, AudioManager.eUIClip.Navigate));
                 }
                 m_CurrentTime -= Time.deltaTime;
                 break;
@@ -132,6 +138,9 @@ public class UIMenu : MonoBehaviour
                 if (data.GetButtonDown())
                 {
                     OnItemSelected(m_ActiveIndex);
+
+                    // audio
+                    VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestUIAudioEvent(true, AudioManager.eUIClip.Confirm));
                 }
                 break;
         }

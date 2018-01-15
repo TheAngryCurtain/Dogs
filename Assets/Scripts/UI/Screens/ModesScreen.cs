@@ -78,6 +78,9 @@ public class ModesScreen : UIBaseScreen
 
                     //m_ActiveMenu.PopulateMenu();
                     m_ActiveMenu.RefocusMenu();
+
+                    // audio
+                    VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestUIAudioEvent(true, AudioManager.eUIClip.Back));
                 }
                 break;
         }

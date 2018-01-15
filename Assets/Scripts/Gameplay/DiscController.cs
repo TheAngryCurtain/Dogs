@@ -9,6 +9,7 @@ public class DiscController : MonoBehaviour
     [SerializeField] private TrailRenderer m_Trail;
     [SerializeField] private Collider m_Collider;
     [SerializeField] private ParticleSystem m_Starburst;
+    [SerializeField] private AudioSource m_AudioSource;
 
     // TODO move this into some sort of Ultimate Rules manager or something later
     [SerializeField] private GameObject m_SafeAreaPrefab;
@@ -33,9 +34,10 @@ public class DiscController : MonoBehaviour
         //VSEventManager.Instance.RemoveListener<GameplayEvents.DogTouchGroundEvent>(DogTouchGroundAfterCatch);
     }
 
-#if UNITY_EDITOR
     private void Update()
     {
+#if UNITY_EDITOR
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             // debug reset
@@ -61,8 +63,14 @@ public class DiscController : MonoBehaviour
 
             Throw(m_Thrower.forward, 65f, 0f);
         }
-    }
 #endif
+        // weird edge case where the disc riccochets outside of the terrain
+        if (m_Transform.position.y < -1f && !m_Held)
+        {
+            VSEventManager.Instance.TriggerEvent(new GameplayEvents.DiscTouchGroundEvent());
+            m_Held = true;
+        }
+    }
 
     public void Reset()
     {
@@ -120,6 +128,8 @@ public class DiscController : MonoBehaviour
             VSEventManager.Instance.TriggerEvent(new GameplayEvents.DiscTouchGroundEvent());
             m_Held = true;
         }
+
+        m_AudioSource.Play();
     }
 
     private void FixedUpdate()

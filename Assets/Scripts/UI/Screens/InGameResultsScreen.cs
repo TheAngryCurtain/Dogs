@@ -38,6 +38,13 @@ public class InGameResultsScreen : UIBaseScreen
                 if (data.GetButtonDown())
                 {
                     UIManager.Instance.LoadLevelWithScreen((int)eScene.Main, UI.Enums.ScreenId.MainMenu);
+
+                    // audio
+                    VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestUIAudioEvent(true, AudioManager.eUIClip.Back));
+
+                    // stop level audio
+                    VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestLevelAudioEvent(false));
+
                 }
                 break;
         }

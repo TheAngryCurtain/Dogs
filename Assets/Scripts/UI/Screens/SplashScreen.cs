@@ -21,6 +21,12 @@ public class SplashScreen : UIBaseScreen
                 if (data.GetButtonDown())
                 {
                     UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.MainMenu);
+
+                    // audio
+                    // for now, use a gameplay event because there is no proper effect for this yet
+                    // randomly pick b or g
+                    int random = UnityEngine.Random.Range((int)AudioManager.eGamePlayClip.Praise_B, (int)(AudioManager.eGamePlayClip.Praise_G + 1));
+                    VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestGameplayAudioEvent(true, (AudioManager.eGamePlayClip)random));
                 }
                 break;
         }

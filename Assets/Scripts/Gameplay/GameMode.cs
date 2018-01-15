@@ -40,6 +40,7 @@ public class CatchMode : GameMode
     {
         VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(0));
         VSEventManager.Instance.TriggerEvent(new GameplayEvents.ResetDiscEvent());
+        VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestLevelAudioEvent(true));
 
         VSEventManager.Instance.AddListener<GameplayEvents.DogCatchDiscEvent>(OnDogCatchDisc);
         VSEventManager.Instance.AddListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchGround);
@@ -78,6 +79,9 @@ public class CatchMode : GameMode
         }
         else
         {
+            // audio
+            VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestGameplayAudioEvent(true, AudioManager.eGamePlayClip.Whistle));
+
             VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMessageEvent(endMessage, 1f, InGameHudScreen.eMessageAlignment.Neutral));
             callback();
         }
@@ -107,6 +111,7 @@ public class CatchMode : GameMode
         float modifier = 1f;
 
         StatsCollection.eStatType catchType = StatsCollection.eStatType.GoodCatches;
+        AudioManager.eGamePlayClip clapAmount = AudioManager.eGamePlayClip.Small_Clap;
         int catchesIndex = 0;
         switch (e.ActionType)
         {
@@ -116,12 +121,14 @@ public class CatchMode : GameMode
 
             case IDog.eActionType.Jump:
                 catchType = StatsCollection.eStatType.GreatCatches;
+                clapAmount = AudioManager.eGamePlayClip.Med_Clap;
                 catchesIndex = 1;
                 modifier = 1.5f;
                 break;
 
             case IDog.eActionType.Special:
                 catchType = StatsCollection.eStatType.ExcellentCatches;
+                clapAmount = AudioManager.eGamePlayClip.Big_Clap;
                 catchesIndex = 2;
                 modifier = 2f;
                 break;
@@ -148,6 +155,9 @@ public class CatchMode : GameMode
         }
 
         m_PreviousWasMiss = false;
+
+        // audio
+        VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestGameplayAudioEvent(true, clapAmount));
 
         Utils.Instance.ActAfterDelay(3f, Reset);
     }
@@ -206,6 +216,9 @@ public class CatchMode : GameMode
             m_Collection.UpdateStat(StatsCollection.eStatType.Score, m_Score);
             m_Collection.UpdateStat(StatsCollection.eStatType.Difficulty, (int)GameManager.Instance.m_Difficulty);
         }
+
+        // audio
+        VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestGameplayAudioEvent(true, AudioManager.eGamePlayClip.Disappointment));
 
         VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMessageEvent("Miss!", 1f, InGameHudScreen.eMessageAlignment.Negative));
         VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(m_CurrentNumDrops));

@@ -138,6 +138,9 @@ namespace UI
                         if (m_CanBack && !m_HasSubSectionFocus)
                         {
                             UIManager.Instance.DoBackTransition();
+
+                            // audio
+                            VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestUIAudioEvent(true, AudioManager.eUIClip.Back));
                         }
                     }
                     break;
