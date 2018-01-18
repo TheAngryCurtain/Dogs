@@ -15,10 +15,12 @@ public class InGameReadyScreen : UIBaseScreen
         base.Initialize();
 
         int modeIndex = (int)GameManager.Instance.m_Mode;
+        int subModeIndex = (int)GameManager.Instance.m_SubMode;
         GameModeData modeData = GameManager.Instance.ModeData[modeIndex];
+        GameSubModeData subModeData = modeData.m_SubModes[subModeIndex];
 
         m_HeaderLabel.text = string.Format("Welcome to {0}", modeData.m_Name);
-        m_RulesLabel.text = modeData.m_Rules;
+        m_RulesLabel.text = subModeData.m_Rules;
     }
     
 

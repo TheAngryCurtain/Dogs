@@ -27,10 +27,12 @@ public class GameplayEvents
     public class OnGameStartEvent : VSGameEvent
     {
         public ModesScreen.eMode GameMode;
+        public ModesScreen.eSubMode GameSubMode;
 
-        public OnGameStartEvent(ModesScreen.eMode mode)
+        public OnGameStartEvent(ModesScreen.eMode mode, ModesScreen.eSubMode subMode)
         {
             GameMode = mode;
+            GameSubMode = subMode;
         }
     }
 

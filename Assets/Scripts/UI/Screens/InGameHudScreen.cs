@@ -25,7 +25,7 @@ public class InGameHudScreen : UIBaseScreen
 
         m_ThrowMeter.gameObject.SetActive(false);
 
-        VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnGameStartEvent(GameManager.Instance.m_Mode));
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnGameStartEvent(GameManager.Instance.m_Mode, GameManager.Instance.m_SubMode));
     }
 
     public override void Shutdown()

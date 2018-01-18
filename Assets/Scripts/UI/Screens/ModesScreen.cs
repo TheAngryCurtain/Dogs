@@ -9,15 +9,19 @@ public class ModesScreen : UIBaseScreen
 {
     // TODO move these
     public enum eMode { None = -1, Catch };
+    public enum eSubMode { None = -1, Strikes, Timed };
+
     public enum eDifficulty { None = -1, Easy, Medium, Hard};
 
     [SerializeField] private UIMenu m_Menu;
-    [SerializeField] private UIMenu m_PlayersSubMenu;
+    [SerializeField] private UIMenu m_ModeTypeSubMenu;
     [SerializeField] private UIMenu m_DifficultySubMenu;
     [SerializeField] private Text m_Description;
 
     private eMode m_PreviousMode = eMode.None;
     private eMode m_CurrentMode = eMode.None;
+    private eSubMode m_PreviousSubMode = eSubMode.None;
+    private eSubMode m_CurrentSubMode = eSubMode.None;
     private eDifficulty m_PreviousDifficulty = eDifficulty.None;
     private eDifficulty m_CurrentDifficulty = eDifficulty.None;
     private UIMenu m_ActiveMenu;
@@ -30,7 +34,9 @@ public class ModesScreen : UIBaseScreen
         m_Menu.OnItemSelected += OnMenuItemSelected;
 
         //m_SubMenu.OnItemHighlighted += OnSubMenuItemHighlighted;
-        m_PlayersSubMenu.OnItemSelected += OnPlayerSubMenuSelected;
+        m_ModeTypeSubMenu.OnItemSelected += OnModeTypeSubMenuSelected;
+        m_ModeTypeSubMenu.OnItemHighlighted += OnModeTypeSubMenuHighlighted;
+
         m_DifficultySubMenu.OnItemSelected += OnDifficultySubMenuSelected;
 
         m_Menu.PreSetMenuDataForModes(GameManager.Instance.ModeData);
@@ -45,7 +51,9 @@ public class ModesScreen : UIBaseScreen
         m_Menu.OnItemSelected -= OnMenuItemSelected;
 
         //m_SubMenu.OnItemHighlighted -= OnSubMenuItemHighlighted;
-        m_PlayersSubMenu.OnItemSelected -= OnPlayerSubMenuSelected;
+        m_ModeTypeSubMenu.OnItemSelected -= OnModeTypeSubMenuSelected;
+        m_ModeTypeSubMenu.OnItemHighlighted -= OnModeTypeSubMenuHighlighted;
+
         m_DifficultySubMenu.OnItemSelected -= OnDifficultySubMenuSelected;
 
         base.Shutdown();
@@ -63,12 +71,12 @@ public class ModesScreen : UIBaseScreen
                     m_ActiveMenu.RemoveMenuFocus();
                     m_ActiveMenu.ClearMenu();
 
-                    if (m_ActiveMenu == m_PlayersSubMenu)
+                    if (m_ActiveMenu == m_DifficultySubMenu)
                     {
                         m_CurrentDifficulty = m_PreviousDifficulty;
-                        m_ActiveMenu = m_DifficultySubMenu;
+                        m_ActiveMenu = m_ModeTypeSubMenu;
                     }
-                    else if (m_ActiveMenu == m_DifficultySubMenu)
+                    else if (m_ActiveMenu == m_ModeTypeSubMenu)
                     {
                         m_CurrentMode = m_PreviousMode;
                         m_ActiveMenu = m_Menu;
@@ -94,7 +102,7 @@ public class ModesScreen : UIBaseScreen
         m_CurrentMode = (eMode)index;
         m_ActiveMenu.RemoveMenuFocus();
 
-        m_ActiveMenu = m_DifficultySubMenu;
+        m_ActiveMenu = m_ModeTypeSubMenu;
         m_ActiveMenu.PopulateMenu();
         m_ActiveMenu.RefocusMenu();
 
@@ -106,14 +114,14 @@ public class ModesScreen : UIBaseScreen
         m_Description.text = item.m_Description;
     }
 
-    public void OnPlayerSubMenuSelected(int index)
+    public void OnModeTypeSubMenuSelected(int index)
     {
         // set this here for now, but will need game data structure later
-        GameManager.Instance.m_NumOfPlayers = index + 1;
-        GameManager.Instance.m_Mode = m_CurrentMode;
-        GameManager.Instance.m_Difficulty = m_CurrentDifficulty;
+        //GameManager.Instance.m_NumOfPlayers = index + 1;
+        GameManager.Instance.m_SubMode = (eSubMode)index;
 
-        UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.Locations);
+        m_ActiveMenu = m_DifficultySubMenu;
+        m_ActiveMenu.PopulateMenu();
     }
 
     public void OnDifficultySubMenuSelected(int index)
@@ -121,15 +129,17 @@ public class ModesScreen : UIBaseScreen
         m_PreviousDifficulty = m_CurrentDifficulty;
         m_CurrentDifficulty = (eDifficulty)index;
 
+        GameManager.Instance.m_Mode = m_CurrentMode;
+        GameManager.Instance.m_Difficulty = m_CurrentDifficulty;
+
         m_ActiveMenu.RemoveMenuFocus();
         //m_ActiveMenu.ClearMenu();
 
-        m_ActiveMenu = m_PlayersSubMenu;
-        m_ActiveMenu.PopulateMenu();
+        UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.Locations);
     }
 
-    public void OnSubMenuItemHighlighted(UIMenuItemInfo item)
+    public void OnModeTypeSubMenuHighlighted(UIMenuItemInfo item)
     {
-        //m_Description.text = item.m_Description;
+        m_Description.text = item.m_Description;
     }
 }

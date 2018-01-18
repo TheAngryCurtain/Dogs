@@ -239,13 +239,12 @@ public class TimedCatchMode : BaseCatchMode
 
     private float m_CurrentTime;
     private bool m_RoundStarted = false;
-    private bool m_DiscOnGround = false;
+    private bool m_DiscInAir = false;
 
     public override void Init()
     {
-        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateTimeRemainingEvent(m_CurrentSeconds));
-
         m_CurrentSeconds = m_MaxTimeSeconds;
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateTimeRemainingEvent(m_CurrentSeconds));
 
         base.Init();
     }
@@ -275,19 +274,26 @@ public class TimedCatchMode : BaseCatchMode
     {
         base.LaunchDisc();
 
-        m_DiscOnGround = false;
+        m_DiscInAir = true;
     }
 
     protected override void OnDiscTouchGround(GameplayEvents.DiscTouchGroundEvent e)
     {
         base.OnDiscTouchGround(e);
 
-        m_DiscOnGround = true;
+        m_DiscInAir = false;
+    }
+
+    protected override void OnDogCatchDisc(GameplayEvents.DogCatchDiscEvent e)
+    {
+        base.OnDogCatchDisc(e);
+
+        m_DiscInAir = false;
     }
 
     public override bool CheckEndCondition()
     {
-        return m_CurrentSeconds == 0 && m_DiscOnGround;
+        return m_CurrentSeconds == 0 && !m_DiscInAir;
     }
 }
 

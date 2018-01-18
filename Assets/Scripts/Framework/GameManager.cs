@@ -6,10 +6,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     // TODO really need a data structure for all of this...
-    public int m_NumOfPlayers;
+    public int m_NumOfPlayers = 1; // TODO add in multiplayer stuff (used to live on ModesScreen, line 114)
     public int m_LocationIndex;
     public UI.Enums.ScreenId m_ScreenIDToLoad;
     public ModesScreen.eMode m_Mode;
+    public ModesScreen.eSubMode m_SubMode;
     public ModesScreen.eDifficulty m_Difficulty;
 
     [SerializeField] private GameObject m_SmallDogPrefab;
@@ -67,8 +68,16 @@ public class GameManager : Singleton<GameManager>
         switch (m_Mode)
         {
             case ModesScreen.eMode.Catch:
-                //m_Game.Setup(new StrikeCatchMode());
-                m_Game.Setup(new TimedCatchMode());
+                switch (e.GameSubMode)
+                {
+                    case ModesScreen.eSubMode.Strikes:
+                        m_Game.Setup(new StrikeCatchMode());
+                        break;
+
+                    case ModesScreen.eSubMode.Timed:
+                        m_Game.Setup(new TimedCatchMode());
+                        break;
+                }
                 break;
 
             default:
