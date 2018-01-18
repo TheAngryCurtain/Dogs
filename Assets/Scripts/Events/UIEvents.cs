@@ -47,4 +47,14 @@ public class UIEvents
             HydrationPercent = percent;
         }
     }
+
+    public class UpdateTimeRemainingEvent : VSGameEvent
+    {
+        public int SecondsRemaining;
+
+        public UpdateTimeRemainingEvent(int secs)
+        {
+            SecondsRemaining = secs;
+        }
+    }
 }

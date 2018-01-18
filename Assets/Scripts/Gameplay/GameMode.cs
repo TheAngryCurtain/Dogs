@@ -14,45 +14,26 @@ public abstract class GameMode
     public abstract void Complete();
 }
 
-public class CatchMode : GameMode
+public class BaseCatchMode : GameMode
 {
-    private int m_MaxNumDrops = 3;
-    private int m_CurrentNumDrops;
-    private float m_Score;
-    private string[] m_Messages = new string[]
+    protected const string HIGH_SCORE_SAVE_NAME = "DogsTM_HighScore";
+
+    protected float m_Score;
+    protected string[] m_Messages = new string[]
     {
         "Good!", "Great!", "Excellent!"
     };
-
-    private int m_CountDownRemaining;
+    protected int m_CountDownRemaining;
 
     public float m_MaxDiscDistanceForce = 65f;
     public float[] m_DifficultyMinDistForces = new float[] { 60f, 55f, 50f };
     public float[] m_DifficultyMinDiscCurves = new float[] { 0f, 0.1f, 0.25f };
 
     // stats
-    private int[] m_Catches = new int[3];
-    private int m_ConsecutiveCatches = 0;
-    private bool m_PreviousWasMiss = false;
-    private int m_TotalThrows = 0;
-
-    public override void Init()
-    {
-        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(0));
-        VSEventManager.Instance.TriggerEvent(new GameplayEvents.ResetDiscEvent());
-        VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestLevelAudioEvent(true));
-
-        VSEventManager.Instance.AddListener<GameplayEvents.DogCatchDiscEvent>(OnDogCatchDisc);
-        VSEventManager.Instance.AddListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchGround);
-
-        m_Collection = new StatsCollection();
-
-        m_CountDownRemaining = 3;
-        m_CurrentNumDrops = 0;
-        m_Score = 0;
-
-        StartCountDown();
-    }
+    protected int[] m_Catches = new int[3];
+    protected int m_ConsecutiveCatches = 0;
+    protected bool m_PreviousWasMiss = false;
+    protected int m_TotalThrows = 0;
 
     // ugh, this is messy
     // making a intermediate function to be called with ActAfterDelay
@@ -84,17 +65,46 @@ public class CatchMode : GameMode
 
             VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMessageEvent(endMessage, 1f, InGameHudScreen.eMessageAlignment.Neutral));
             callback();
+
+            StartRound();
         }
+    }
+
+    protected virtual void StartRound()
+    {
+
     }
 
     public override void Update()
     {
-        
+
+    }
+
+    public override void Init()
+    {
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.ResetDiscEvent());
+        VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestLevelAudioEvent(true));
+
+        VSEventManager.Instance.AddListener<GameplayEvents.DogCatchDiscEvent>(OnDogCatchDisc);
+        VSEventManager.Instance.AddListener<GameplayEvents.DiscTouchGroundEvent>(OnDiscTouchGround);
+
+        m_Collection = new StatsCollection();
+
+        m_CountDownRemaining = 3;
+        //m_CurrentNumDrops = 0;
+        m_Score = 0;
+
+        StartCountDown();
+    }
+
+    protected virtual bool ShouldReset()
+    {
+        return true;
     }
 
     public override bool CheckEndCondition()
     {
-        return m_CurrentNumDrops == m_MaxNumDrops;
+        return !ShouldReset();
     }
 
     public override void Complete()
@@ -105,7 +115,18 @@ public class CatchMode : GameMode
         UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.GameResults);
     }
 
-    public void OnDogCatchDisc(GameplayEvents.DogCatchDiscEvent e)
+    protected virtual void LaunchDisc()
+    {
+        int difficultyIndex = (int)GameManager.Instance.m_Difficulty;
+        float minForce = m_DifficultyMinDistForces[difficultyIndex];
+        float curve = m_DifficultyMinDiscCurves[difficultyIndex];
+
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.LaunchDiscEvent(minForce, m_MaxDiscDistanceForce, curve));
+
+        m_TotalThrows += 1;
+    }
+
+    protected virtual void OnDogCatchDisc(GameplayEvents.DogCatchDiscEvent e)
     {
         float baseScoreForCatch = 50f;
         float modifier = 1f;
@@ -170,23 +191,11 @@ public class CatchMode : GameMode
         Utils.Instance.ActAfterDelay(1f, ReadyCountDown);
     }
 
-    private void LaunchDisc()
+    protected virtual void OnDiscTouchGround(GameplayEvents.DiscTouchGroundEvent e)
     {
-        int difficultyIndex = (int)GameManager.Instance.m_Difficulty;
-        float minForce = m_DifficultyMinDistForces[difficultyIndex];
-        float curve = m_DifficultyMinDiscCurves[difficultyIndex];
-        
-        VSEventManager.Instance.TriggerEvent(new GameplayEvents.LaunchDiscEvent(minForce, m_MaxDiscDistanceForce, curve));
-
-        m_TotalThrows += 1;
-    }
-
-    public void OnDiscTouchGround(GameplayEvents.DiscTouchGroundEvent e)
-    {
-        m_CurrentNumDrops += 1;
         m_PreviousWasMiss = true;
         m_ConsecutiveCatches = 0;
-        if (m_CurrentNumDrops < m_MaxNumDrops)
+        if (ShouldReset()) 
         {
             Utils.Instance.ActAfterDelay(3f, Reset);
         }
@@ -205,11 +214,11 @@ public class CatchMode : GameMode
             m_Collection.UpdateStat(StatsCollection.eStatType.CatchPercent, catchPercent);
 
             // for now, save high score in playerprefs
-            int highScore = PlayerPrefs.GetInt("DogsTM_HighScore");
+            int highScore = PlayerPrefs.GetInt(HIGH_SCORE_SAVE_NAME);
             if (m_Score > highScore)
             {
                 highScore = (int)m_Score;
-                PlayerPrefs.SetInt("DogsTM_HighScore", highScore);
+                PlayerPrefs.SetInt(HIGH_SCORE_SAVE_NAME, highScore);
             }
 
             m_Collection.UpdateStat(StatsCollection.eStatType.HighScore, highScore);
@@ -219,8 +228,100 @@ public class CatchMode : GameMode
 
         // audio
         VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestGameplayAudioEvent(true, AudioManager.eGamePlayClip.Disappointment));
-
         VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMessageEvent("Miss!", 1f, InGameHudScreen.eMessageAlignment.Negative));
+    }
+}
+
+public class TimedCatchMode : BaseCatchMode
+{
+    private int m_MaxTimeSeconds = 120;
+    private int m_CurrentSeconds;
+
+    private float m_CurrentTime;
+    private bool m_RoundStarted = false;
+    private bool m_DiscOnGround = false;
+
+    public override void Init()
+    {
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateTimeRemainingEvent(m_CurrentSeconds));
+
+        m_CurrentSeconds = m_MaxTimeSeconds;
+
+        base.Init();
+    }
+
+    protected override void StartRound()
+    {
+        base.StartRound();
+
+        m_CurrentTime = Time.time;
+        m_RoundStarted = true;
+    }
+
+    public override void Update()
+    {
+        if (m_RoundStarted && m_CurrentSeconds > 0 && Time.time - m_CurrentTime > 1f)
+        {
+            m_CurrentSeconds -= 1;
+            VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateTimeRemainingEvent(m_CurrentSeconds));
+
+            m_CurrentTime = Time.time;
+        }
+
+        base.Update();
+    }
+
+    protected override void LaunchDisc()
+    {
+        base.LaunchDisc();
+
+        m_DiscOnGround = false;
+    }
+
+    protected override void OnDiscTouchGround(GameplayEvents.DiscTouchGroundEvent e)
+    {
+        base.OnDiscTouchGround(e);
+
+        m_DiscOnGround = true;
+    }
+
+    public override bool CheckEndCondition()
+    {
+        return m_CurrentSeconds == 0 && m_DiscOnGround;
+    }
+}
+
+public class StrikeCatchMode : BaseCatchMode
+{
+    private int m_MaxNumDrops = 3;
+    private int m_CurrentNumDrops;
+
+    public override void Init()
+    {
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(0));
+
+        m_CountDownRemaining = 3;
+        m_CurrentNumDrops = 0;
+        m_Score = 0;
+
+        base.Init();
+    }
+
+    protected override bool ShouldReset()
+    {
+        return m_CurrentNumDrops < m_MaxNumDrops;
+    }
+
+    public override bool CheckEndCondition()
+    {
+        return m_CurrentNumDrops == m_MaxNumDrops;
+    }
+
+    protected override void OnDiscTouchGround(GameplayEvents.DiscTouchGroundEvent e)
+    {
+        m_CurrentNumDrops += 1;
         VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(m_CurrentNumDrops));
+
+        base.OnDiscTouchGround(e);
     }
 }

@@ -67,7 +67,8 @@ public class GameManager : Singleton<GameManager>
         switch (m_Mode)
         {
             case ModesScreen.eMode.Catch:
-                m_Game.Setup(new CatchMode());
+                //m_Game.Setup(new StrikeCatchMode());
+                m_Game.Setup(new TimedCatchMode());
                 break;
 
             default:
