@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum eScene { Boot, Main, DogPark };
+public enum eScene { Boot, Main, DogPark, DogPitch };
 
 public class SceneLoader : MonoBehaviour
 {

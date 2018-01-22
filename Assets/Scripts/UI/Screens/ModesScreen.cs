@@ -115,7 +115,11 @@ public class ModesScreen : UIBaseScreen
         m_ActiveMenu.RemoveMenuFocus();
 
         m_ActiveMenu = m_ModeTypeSubMenu;
+
+        GameModeData currentData = GameManager.Instance.ModeData[index];
+        m_ActiveMenu.PreSetMenuDataForSubModes(currentData);
         m_ActiveMenu.PopulateMenu();
+
         m_ActiveMenu.RefocusMenu();
 
         m_HasSubSectionFocus = true;
@@ -129,8 +133,10 @@ public class ModesScreen : UIBaseScreen
     public void OnModeTypeSubMenuSelected(int index)
     {
         // set this here for now, but will need game data structure later
+        // this is now forced to single player for the time being
         //GameManager.Instance.m_NumOfPlayers = index + 1;
-        GameManager.Instance.m_SubMode = (eSubMode)index;
+        int modesOffset = 2;
+        GameManager.Instance.m_SubMode = (eSubMode)(index + modesOffset);
 
         m_ActiveMenu = m_DifficultySubMenu;
         m_ActiveMenu.PopulateMenu();

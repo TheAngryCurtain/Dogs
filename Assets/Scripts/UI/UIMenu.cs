@@ -51,6 +51,34 @@ public class UIMenu : MonoBehaviour
         }
     }
 
+    public void PreSetMenuDataForSubModes(GameModeData data)
+    {
+        GameSubModeData[] subModes = data.m_SubModes;
+        m_MenuItems = new UIMenuItemInfo[subModes.Length];
+        for (int i = 0; i < subModes.Length; i++)
+        {
+            m_MenuItems[i] = new UIMenuItemInfo();
+            m_MenuItems[i].m_IconSprite = data.m_Icon;
+            m_MenuItems[i].m_LabelText = subModes[i].m_Name;
+            m_MenuItems[i].m_Description = subModes[i].m_Description;
+        }
+    }
+
+    public void PreSetMenuDataForLocations(GameModeData data)
+    {
+        LocationData[] locations = data.m_Locations;
+        m_MenuItems = new UIMenuItemInfo[locations.Length];
+
+        for (int i = 0; i < locations.Length; i++)
+        {
+            m_MenuItems[i] = new UIMenuItemInfo();
+            m_MenuItems[i].m_IconSprite = data.m_Icon;
+            m_MenuItems[i].m_LabelText = locations[i].m_Name;
+            m_MenuItems[i].m_Description = locations[i].m_Description;
+            m_MenuItems[i].m_ThumbnailSprite = locations[i].m_Thumbnail;
+        }
+    }
+
     public void ClearMenu()
     {
         for (int i = 0; i < m_MenuContainer.childCount; i++)

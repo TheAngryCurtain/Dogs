@@ -9,6 +9,7 @@ public class GameModeData
     public string m_Name;
 
     public GameObject[] m_Prefabs;
+    public LocationData[] m_Locations;
 
     [TextArea(3, 5)] public string m_Description;
 

@@ -30,7 +30,8 @@ public class InGameResultsScreen : UIBaseScreen
             case RewiredConsts.Action.UI_Confirm: // Retry
                 if (data.GetButtonDown())
                 {
-                    UIManager.Instance.LoadLevelWithScreen((int)eScene.DogPark, UI.Enums.ScreenId.GameReady);
+                    int sceneIndex = GameManager.Instance.m_LocationIndex;
+                    UIManager.Instance.LoadLevelWithScreen(sceneIndex, UI.Enums.ScreenId.GameReady);
                 }
                 break;
 

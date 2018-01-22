@@ -16,6 +16,17 @@ public class InGameReadyScreen : UIBaseScreen
 
         int modeIndex = (int)GameManager.Instance.m_Mode;
         int subModeIndex = (int)GameManager.Instance.m_SubMode;
+
+        switch (modeIndex)
+        {
+            case (int)ModesScreen.eMode.Catch:
+                break;
+
+            case (int)ModesScreen.eMode.Soccer:
+                subModeIndex -= 2; // dumb enum offset. Need a way to fix this.
+                break;
+        }
+
         GameModeData modeData = GameManager.Instance.ModeData[modeIndex];
         GameSubModeData subModeData = modeData.m_SubModes[subModeIndex];
 

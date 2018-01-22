@@ -27,7 +27,7 @@ public class CameraManager : Singleton<CameraManager>
 
     private void OnLevelLoaded(GameplayEvents.OnLevelLoadedEvent e)
     {
-        if (e.SceneID == 2)
+        if (e.SceneID >= 2) // don't enable the camera in the front end; only in levels
         {
             m_CamController.enabled = true;
         }
