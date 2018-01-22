@@ -8,10 +8,22 @@ using Rewired;
 public class ModesScreen : UIBaseScreen
 {
     // TODO move these
-    public enum eMode { None = -1, Catch };
-    public enum eSubMode { None = -1, Strikes, Timed };
+    public enum eMode {
+        None = -1,
+        Catch,
+        Soccer
+    };
 
-    public enum eDifficulty { None = -1, Easy, Medium, Hard};
+    public enum eSubMode {
+        None = -1,
+        Strikes, Timed,
+        Targets, GoalKeeper
+        };
+
+    public enum eDifficulty {
+        None = -1,
+        Easy, Medium, Hard
+    };
 
     [SerializeField] private UIMenu m_Menu;
     [SerializeField] private UIMenu m_ModeTypeSubMenu;

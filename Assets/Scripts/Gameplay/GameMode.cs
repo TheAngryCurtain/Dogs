@@ -8,12 +8,24 @@ public abstract class GameMode
     protected StatsCollection m_Collection;
     public StatsCollection Statistics { get { return m_Collection; } }
 
+    public GameMode(GameModeData modeData)
+    {
+        Build(modeData);
+    }
+
+    public abstract void Build(GameModeData modeData);
     public abstract void Init();
     public abstract void Update();
     public abstract bool CheckEndCondition();
     public abstract void Complete();
 }
 
+// TODO
+// each mode should be responsible for spawning in it's own things
+// find a place to store prefabs where they are accessible to any mode (maybe game mode data??) and have a Utils function for instantiating them
+// game mode data should probably (somehow) live in game mode, like it should have all along
+
+#region Disc Catching
 public class BaseCatchMode : GameMode
 {
     protected const string HIGH_SCORE_SAVE_NAME = "DogsTM_HighScore";
@@ -34,6 +46,32 @@ public class BaseCatchMode : GameMode
     protected int m_ConsecutiveCatches = 0;
     protected bool m_PreviousWasMiss = false;
     protected int m_TotalThrows = 0;
+
+    public BaseCatchMode(GameModeData data) : base(data) { }
+
+    public override void Build(GameModeData modeData)
+    {
+        // callbacks
+        // nothing nice about this
+        Action<GameObject>[] callbacks = new Action<GameObject>[]
+        {
+            null,
+            null,
+            DiscCallback
+        };
+
+        // instantiate any objects that all sub-modes will use
+        int count = modeData.m_Prefabs.Length;
+        for (int i = 0; i < count; i++)
+        {
+            Utils.Instance.SpawnObject(modeData.m_Prefabs[i], null, callbacks[i]);
+        }
+    }
+
+    private void DiscCallback(GameObject obj)
+    {
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnDiscSpawnedEvent(obj));
+    }
 
     // ugh, this is messy
     // making a intermediate function to be called with ActAfterDelay
@@ -241,6 +279,15 @@ public class TimedCatchMode : BaseCatchMode
     private bool m_RoundStarted = false;
     private bool m_DiscInAir = false;
 
+    public TimedCatchMode(GameModeData data) : base(data) { }
+
+    public override void Build(GameModeData modeData)
+    {
+        base.Build(modeData);
+
+        // no extra objects for timed mode
+    }
+
     public override void Init()
     {
         m_CurrentSeconds = m_MaxTimeSeconds;
@@ -302,6 +349,15 @@ public class StrikeCatchMode : BaseCatchMode
     private int m_MaxNumDrops = 3;
     private int m_CurrentNumDrops;
 
+    public StrikeCatchMode(GameModeData data) : base(data) { }
+
+    public override void Build(GameModeData modeData)
+    {
+        base.Build(modeData);
+
+        // no extra objects for strike mode
+    }
+
     public override void Init()
     {
         VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMissedCatchEvent(0));
@@ -331,3 +387,147 @@ public class StrikeCatchMode : BaseCatchMode
         base.OnDiscTouchGround(e);
     }
 }
+#endregion
+
+#region Soccer
+public class BaseSoccerMode : GameMode
+{
+    protected const string HIGH_SCORE_SAVE_NAME = "DogsTM_HighScore";
+
+    public BaseSoccerMode(GameModeData data) : base(data) { }
+
+    public override void Build(GameModeData modeData)
+    {
+        // callbacks
+        Action<GameObject>[] callbacks = new Action<GameObject>[]
+        {
+            null,
+            null,
+            null
+        };
+
+        // instantiate any objects that all sub-modes will use
+        int count = modeData.m_Prefabs.Length;
+        for (int i = 0; i < count; i++)
+        {
+            Utils.Instance.SpawnObject(modeData.m_Prefabs[i], null, callbacks[i]);
+        }
+    }
+
+    private void ReadyCountDown()
+    {
+        ShowMessage("Ready?");
+        Utils.Instance.ActAfterDelay(1f, Ready);
+    }
+
+    // this is dumb, but without having access to coroutines here, we need a void function to show a message
+    private void Ready()
+    {
+        ShowMessage("Go!");
+
+        VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestGameplayAudioEvent(true, AudioManager.eGamePlayClip.Whistle));
+    }
+
+    protected void ShowMessage(string message)
+    {
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMessageEvent(message, 1f, InGameHudScreen.eMessageAlignment.Neutral));
+    }
+
+    public override void Update()
+    {
+
+    }
+
+    public override void Init()
+    {
+        VSEventManager.Instance.TriggerEvent(new AudioEvents.RequestLevelAudioEvent(true));
+
+        m_Collection = new StatsCollection();
+        ReadyCountDown();
+    }
+
+    protected virtual bool ShouldReset()
+    {
+        return true;
+    }
+
+    public override bool CheckEndCondition()
+    {
+        return !ShouldReset();
+    }
+
+    public override void Complete()
+    {
+        UIManager.Instance.TransitionToScreen(UI.Enums.ScreenId.GameResults);
+    }
+
+
+    private void Reset()
+    {
+        VSEventManager.Instance.TriggerEvent(new UIEvents.UpdateMessageEvent("Reset!", 1f, InGameHudScreen.eMessageAlignment.Neutral));
+        VSEventManager.Instance.TriggerEvent(new GameplayEvents.ResetDiscEvent());
+
+        Utils.Instance.ActAfterDelay(1f, ReadyCountDown);
+    }
+}
+
+public class TargetSoccerMode : BaseSoccerMode
+{
+    public TargetSoccerMode(GameModeData data) : base(data) { }
+
+    public override void Build(GameModeData modeData)
+    {
+        base.Build(modeData);
+
+        GameSubModeData subData = modeData.m_SubModes[(int)ModesScreen.eSubMode.Timed];
+        int count = subData.m_Prefabs.Length;
+        for (int i = 0; i < count; i++)
+        {
+            //Utils.Instance.SpawnObject();
+        }
+    }
+
+    public override void Init()
+    {
+        // add listener for resetting targets
+        // add listener for targets being hit
+        // add listener for ball going into net/oob and reseting
+
+        base.Init();
+    }
+
+    public override void Complete()
+    {
+        // remove listeners
+
+        base.Complete();
+    }
+}
+
+public class GoalKeeperSoccerMode : BaseSoccerMode
+{
+    public GoalKeeperSoccerMode(GameModeData data) : base(data) { }
+
+    public override void Build(GameModeData modeData)
+    {
+        base.Build(modeData);
+    }
+
+    public override void Init()
+    {
+        // add listener for resetting ball
+        // add listener for ball being launched ?
+        // add listener for ball hitting dog
+        // add listener for ball going into net/oob
+
+        base.Init();
+    }
+
+    public override void Complete()
+    {
+        // remove listeners
+
+        base.Complete();
+    }
+}
+#endregion

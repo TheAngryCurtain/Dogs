@@ -14,9 +14,6 @@ public class GameManager : Singleton<GameManager>
     public ModesScreen.eDifficulty m_Difficulty;
 
     [SerializeField] private GameObject m_SmallDogPrefab;
-    [SerializeField] private GameObject m_DiscPrefab;
-    [SerializeField] private GameObject m_launcherPrefab;
-    [SerializeField] private GameObject m_DiscTrackerPrefab;
 
     [SerializeField] private GameObject m_GamePrefab;
     [SerializeField] private GameModeData[] m_ModeData;
@@ -48,21 +45,15 @@ public class GameManager : Singleton<GameManager>
 
     private void InitGame(GameplayEvents.OnGameStartEvent e)
     {
-        // Spawn Player and World Objects
-        Instantiate(m_launcherPrefab, null); // spawn at it's prefab position?
-
-        Instantiate(m_DiscTrackerPrefab, null);
-        
+        // spawn dog
         GameObject dogObj = (GameObject)Instantiate(m_SmallDogPrefab, null);
         VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnPlayerSpawnedEvent(dogObj));
-
-        GameObject discObj = (GameObject)Instantiate(m_DiscPrefab, null);
-        VSEventManager.Instance.TriggerEvent(new GameplayEvents.OnDiscSpawnedEvent(discObj));
         
-
         // Spawn Game
         GameObject gameObj = (GameObject)Instantiate(m_GamePrefab, Vector3.zero, Quaternion.identity);
         m_Game = gameObj.GetComponent<Game>();
+
+        GameModeData modeData = m_ModeData[(int)m_Mode];
 
         // Setup Mode
         switch (m_Mode)
@@ -71,11 +62,24 @@ public class GameManager : Singleton<GameManager>
                 switch (e.GameSubMode)
                 {
                     case ModesScreen.eSubMode.Strikes:
-                        m_Game.Setup(new StrikeCatchMode());
+                        m_Game.Setup(new StrikeCatchMode(modeData));
                         break;
 
                     case ModesScreen.eSubMode.Timed:
-                        m_Game.Setup(new TimedCatchMode());
+                        m_Game.Setup(new TimedCatchMode(modeData));
+                        break;
+                }
+                break;
+
+            case ModesScreen.eMode.Soccer:
+                switch (e.GameSubMode)
+                {
+                    case ModesScreen.eSubMode.Targets:
+                        m_Game.Setup(new TargetSoccerMode(modeData));
+                        break;
+
+                    case ModesScreen.eSubMode.GoalKeeper:
+                        m_Game.Setup(new GoalKeeperSoccerMode(modeData));
                         break;
                 }
                 break;
@@ -87,15 +91,6 @@ public class GameManager : Singleton<GameManager>
         }
 
         m_Game.Init();
-
-        // TODO
-        // then, make sure the disc and launcher are set up to fire (maybe a "Ready?" text, then a delay and "Catch!" right before launching)
-        // Then, once the catch is made, award the points (DONE)_and reset the disc
-        // Once the 3 misses are done, end the game
-        // show a results screen
-        // TODO gameplay - add consecutive catch combo?
-        // TODO gameplay - add 
-        
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)

@@ -18,6 +18,20 @@ public class Utils : Singleton<Utils>
         StartCoroutine(Delay(time, callback));
     }
 
+    public void SpawnObject(GameObject prefab, Vector3? position, System.Action<GameObject> callback)
+    {
+        GameObject obj = (GameObject)Instantiate(prefab, null);
+        if (position != null)
+        {
+            obj.transform.position = position.Value;
+        }
+
+        if (callback != null)
+        {
+            callback(obj);
+        }
+    }
+
     private IEnumerator Delay(float time, System.Action callback)
     {
         yield return new WaitForSeconds(time);
